@@ -1,0 +1,43 @@
+# =================================================================
+# NODE.JS
+# =================================================================
+# Node Modules Folder
+/node_modules
+/jspm_packages
+
+# Lock Files
+package-lock.json      # Hanya jika Anda menggunakan NPM lama
+npm-debug.log
+.npm/
+
+# Folder Build (Jika Anda menggunakan build tool seperti Webpack)
+/dist
+/build
+/out
+
+# =================================================================
+# SENSITIVE DATA AND ENVIRONMENT
+# =================================================================
+# Variabel Lingkungan RAHASIA
+.env
+.env.local
+.env.*.local
+
+# Database / Storage
+*.sqlite
+*.sqlite3
+/storage/*.db
+
+# =================================================================
+# IDE AND OS FILES (VS Code, Mac, Windows)
+# =================================================================
+.vscode/* # VS Code settings
+!.vscode/settings.json # Kecuali Anda ingin menyertakan settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/              # History files
+
+# OS generated files
+.DS_Store              # macOS
+Thumbs.db              # Windows
