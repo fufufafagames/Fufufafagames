@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style>
+      /* Landing Page Specific Styles - Scoped to not affect navbar */
+      /* Dark theme dengan cyan accent (#00D9FF) */
+
+      body.landing-page {
+        background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        min-height: 100vh;
+      }
+
+      /* Hero Section */
+      .landing-hero {
+        padding: 100px 20px 80px;
+        text-align: center;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 217, 255, 0.1) 0%,
+          transparent 100%
+        );
+      }
+
+      .landing-hero .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 20px;
+        text-shadow: 0 0 30px rgba(0, 217, 255, 0.5);
+      }
+
+      .landing-hero .hero-subtitle {
+        font-size: 1.3rem;
+        color: #b8b8d1;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .landing-hero .hero-btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
+        color: #0f0f1e;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+      }
+
+      .landing-hero .hero-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
+        color: #0f0f1e;
+      }
+
+      /* Section Styles */
+      .landing-section {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .landing-section .section-title {
+        font-size: 2.5rem;
+        color: #ffffff;
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+      }
+
+      .landing-section .section-title::after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #00d9ff 0%, #0099cc 100%);
+        margin: 15px auto 0;
+        border-radius: 2px;
+      }
+
+      /* Featured Games Grid */
+      .landing-games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      .landing-game-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 217, 255, 0.1);
+        text-decoration: none;
+        display: block;
+      }
+
+      .landing-game-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 217, 255, 0.2);
+        border-color: rgba(0, 217, 255, 0.5);
+      }
+
+      .landing-game-card .game-thumbnail {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .landing-game-card .game-info {
+        padding: 20px;
+      }
+
+      .landing-game-card .game-title {
+        font-size: 1.3rem;
+        color: #ffffff;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .landing-game-card .game-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        font-size: 0.9rem;
+        color: #b8b8d1;
+      }
+
+      .landing-game-card .game-category {
+        background: rgba(0, 217, 255, 0.2);
+        color: #00d9ff;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+      }
+
+      .landing-game-card .game-stats {
+        display: flex;
+        gap: 15px;
+      }
+
+      .landing-game-card .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* Categories Section */
+      .landing-categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+      }
+
+      .landing-category-card {
+        background: rgba(0, 217, 255, 0.1);
+        padding: 30px 20px;
+        border-radius: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+      }
+
+      .landing-category-card:hover {
+        background: rgba(0, 217, 255, 0.2);
+        border-color: #00d9ff;
+        transform: scale(1.05);
+      }
+
+      .landing-category-card .category-name {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      /* Empty State */
+      .landing-empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #b8b8d1;
+      }
+
+      .landing-empty-state .empty-state-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+
+      .landing-empty-state h3 {
+        color: #ffffff;
+        margin-bottom: 10px;
+      }
+
+      /* Footer */
+      .landing-footer {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 40px 20px;
+        text-align: center;
+        border-top: 1px solid rgba(0, 217, 255, 0.1);
+        margin-top: 60px;
+      }
+
+      .landing-footer .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+      }
+
+      .landing-footer .footer-link {
+        color: #00d9ff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .landing-footer .footer-link:hover {
+        color: #ffffff;
+      }
+
+      .landing-footer .footer-text {
+        color: #b8b8d1;
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .landing-hero .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .landing-hero .hero-subtitle {
+          font-size: 1.1rem;
+        }
+
+        .landing-section .section-title {
+          font-size: 2rem;
+        }
+
+        .landing-games-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .landing-categories-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .landing-footer .footer-links {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body class="landing-page">
+    <!-- Include Navbar -->
+    <%- include('layouts/header', { title: title }) %> <%-
+    include('partials/navbar') %>
+
+    <!-- Hero Section -->
+    <section class="landing-hero">
+      <h1 class="hero-title">🎮 Discover Amazing Games</h1>
+      <p class="hero-subtitle">
+        Explore, play, and share incredible browser-based games created by
+        talented developers worldwide
+      </p>
+      <a href="/games" class="hero-btn">Browse Games</a>
+    </section>
+
+    <!-- Featured Games Section -->
+    <section class="landing-section">
+      <h2 class="section-title">Featured Games</h2>
+
+      <% if (featuredGames && featuredGames.length > 0) { %>
+      <!-- Games Grid -->
+      <div class="landing-games-grid">
+        <% featuredGames.forEach(game => { %>
+        <a href="/games/<%= game.slug %>" class="landing-game-card">
+          <img
+            src="<%= game.thumbnail_url %>"
+            alt="<%= game.title %>"
+            class="game-thumbnail"
+          />
+          <div class="game-info">
+            <h3 class="game-title"><%= game.title %></h3>
+            <div class="game-meta">
+              <span class="game-category"><%= game.category %></span>
+              <div class="game-stats">
+                <span class="stat-item">
+                  ⭐ <%= game.avg_rating ? game.avg_rating.toFixed(1) : '0.0' %>
+                </span>
+                <span class="stat-item"> 🎮 <%= game.play_count || 0 %> </span>
+              </div>
+            </div>
+          </div>
+        </a>
+        <% }); %>
+      </div>
+
+      <!-- View All Button -->
+      <div style="text-align: center; margin-top: 40px">
+        <a href="/games" class="hero-btn">View All Games</a>
+      </div>
+      <% } else { %>
+      <!-- Empty State - Belum ada games -->
+      <div class="landing-empty-state">
+        <div class="empty-state-icon">🎮</div>
+        <h3>No Games Yet</h3>
+        <p>Be the first to upload a game and share it with the community!</p>
+        <% if (user) { %>
+        <a href="/games/create/new" class="hero-btn" style="margin-top: 20px"
+          >Upload Your Game</a
+        >
+        <% } else { %>
+        <a href="/auth/login" class="hero-btn" style="margin-top: 20px"
+          >Login to Upload</a
+        >
+        <% } %>
+      </div>
+      <% } %>
+    </section>
+
+    <!-- Popular Categories Section -->
+    <section class="landing-section">
+      <h2 class="section-title">Popular Categories</h2>
+      <div class="landing-categories-grid">
+        <% categories.forEach(category => { %>
+        <a href="/games?category=<%= category %>" class="landing-category-card">
+          <div class="category-name"><%= category %></div>
+        </a>
+        <% }); %>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <%- include('layouts/footer') %>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>

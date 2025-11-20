@@ -1,0 +1,51 @@
+<!-- Game Card Component -->
+<div class="game-card" onclick="window.location.href='/games/<%= game.slug %>'">
+  <div class="game-card-image">
+    <img
+      src="<%= game.thumbnail_url %>"
+      alt="<%= game.title %>"
+      loading="lazy"
+    />
+    <% if (game.game_type === 'download') { %>
+    <span class="badge-download">
+      <i class="fas fa-download"></i> Download
+    </span>
+    <% } else { %>
+    <span class="badge-playable"> <i class="fas fa-play"></i> Play Now </span>
+    <% } %>
+  </div>
+
+  <div class="game-card-body">
+    <h3 class="game-card-title"><%= game.title %></h3>
+
+    <div class="game-meta">
+      <span class="game-category">
+        <i class="fas fa-tag"></i> <%= game.category %>
+      </span>
+    </div>
+
+    <div class="game-stats">
+      <div class="stat-item">
+        <i class="fas fa-star star-rating"></i>
+        <span><%= game.avg_rating ? game.avg_rating.toFixed(1) : '0.0' %></span>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-eye"></i>
+        <span><%= game.play_count %> plays</span>
+      </div>
+    </div>
+
+    <div class="game-author">
+      <% if (game.author_avatar) { %>
+      <img
+        src="<%= game.author_avatar %>"
+        alt="<%= game.author_name %>"
+        class="author-avatar"
+      />
+      <% } else { %>
+      <i class="fas fa-user-circle"></i>
+      <% } %>
+      <span><%= game.author_name %></span>
+    </div>
+  </div>
+</div>

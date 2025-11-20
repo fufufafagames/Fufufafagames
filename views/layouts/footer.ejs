@@ -1,0 +1,119 @@
+<footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="footer-brand">🎮 FUFUFAFAGAMES</h4>
+                    <p class="text-muted">Platform untuk upload dan play game berbasis browser</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/games">All Games</a></li>
+                        <% if (user) { %>
+                            <li><a href="/games/create/new">Upload Game</a></li>
+                            <li><a href="/profile/<%= user.id %>">My Profile</a></li>
+                        <% } else { %>
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Register</a></li>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Categories</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="/games?category=Action">Action</a></li>
+                        <li><a href="/games?category=Puzzle">Puzzle</a></li>
+                        <li><a href="/games?category=RPG">RPG</a></li>
+                        <li><a href="/games?category=Adventure">Adventure</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 FUFUFAFAGAMES. Built with ❤️ for gamers.</p>
+            </div>
+        </div>
+    </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+        <script src="/js/main.js"></script>
+    
+        <script>
+        function extractTokensFromHash() {
+            const hash = window.location.hash.substring(1); // Remove # symbol
+            const params = new URLSearchParams(hash);
+
+            return {
+                access_token: params.get("access_token"),
+                refresh_token: params.get("refresh_token"),
+                error: params.get("error"),
+                error_description: params.get("error_description"),
+            };
+        }
+
+        // Process OAuth callback
+        async function processOAuthCallback() {
+            try {
+                const tokens = extractTokensFromHash();
+
+                // HANYA JALANKAN LOGIKA JIKA ADA TOKEN DITERIMA!
+                if (!tokens.access_token && !tokens.error) {
+                    // Jika tidak ada token dan tidak ada error di hash, abaikan (halaman normal)
+                    return; 
+                }
+
+                // Check for errors dari OAuth provider
+                if (tokens.error) {
+                    const errorMsg = tokens.error_description || tokens.error;
+                    console.error("OAuth Error:", errorMsg);
+                    window.location.href = "/login?error=" + encodeURIComponent(errorMsg);
+                    return;
+                }
+
+                // Validasi tokens
+                if (!tokens.access_token) {
+                    console.error("No access token received.");
+                    window.location.href = "/login?error=authentication_failed";
+                    return;
+                }
+
+                // --- BAGIAN PENTING: Mengirim token ke server ---
+                const response = await fetch("/auth/callback/process", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        access_token: tokens.access_token,
+                        refresh_token: tokens.refresh_token,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Success! Redirect ke games page
+                    console.log("Login successful, redirecting...");
+                    // Hapus hash fragment dari URL sebelum redirect final
+                    window.history.replaceState(null, null, window.location.pathname);
+                    window.location.href = result.redirect || "/games";
+                } else {
+                    // Error dari server
+                    console.error("Server Error:", result.error || "Authentication failed");
+                    window.history.replaceState(null, null, window.location.pathname);
+                    window.location.href =
+                        "/login?error=" + encodeURIComponent(result.error || "Authentication failed");
+                }
+            } catch (error) {
+                console.error("OAuth processing error:", error);
+                window.history.replaceState(null, null, window.location.pathname);
+                window.location.href = "/login?error=unexpected_error";
+            }
+        }
+
+        // Jalankan fungsi saat script dimuat (saat redirect dari OAuth)
+        processOAuthCallback();
+         </script>
+</body>
+</html>

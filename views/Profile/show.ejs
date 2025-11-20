@@ -1,0 +1,139 @@
+<%- include('../layouts/header', { title: title }) %> <%-
+include('../partials/navbar') %>
+
+<div class="container mt-4">
+  <div class="row">
+    <!-- Profile Info -->
+    <div class="col-lg-4">
+      <div class="profile-card">
+        <div class="profile-header">
+          <% if (profileUser.avatar) { %>
+          <img
+            src="<%= profileUser.avatar %>"
+            alt="<%= profileUser.name %>"
+            class="profile-avatar"
+          />
+          <% } else { %>
+          <i class="fas fa-user-circle fa-5x text-aqua"></i>
+          <% } %>
+          <h3 class="mt-3"><%= profileUser.name %></h3>
+          <p class="text-muted"><%= profileUser.email %></p>
+
+          <% if (profileUser.bio) { %>
+          <p class="profile-bio"><%= profileUser.bio %></p>
+          <% } %> <% if (user && user.id === profileUser.id) { %>
+          <a href="/profile/edit/me" class="btn btn-aqua btn-sm">
+            <i class="fas fa-edit"></i> Edit Profile
+          </a>
+          <% } %>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-item">
+            <i class="fas fa-gamepad"></i>
+            <div>
+              <strong><%= stats.total_uploads %></strong>
+              <small>Games Uploaded</small>
+            </div>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-eye"></i>
+            <div>
+              <strong><%= stats.total_plays %></strong>
+              <small>Total Plays</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <p>
+            <i class="fas fa-calendar"></i> Joined <%= new
+            Date(profileUser.created_at).toLocaleDateString() %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- User's Games -->
+    <div class="col-lg-8">
+      <div class="profile-games">
+        <h3>
+          <i class="fas fa-gamepad"></i> Uploaded Games (<%= games.length %>)
+        </h3>
+
+        <% if (games.length > 0) { %>
+        <div class="game-grid">
+          <% games.forEach(game => { %>
+          <div
+            class="game-card"
+            onclick="window.location.href='/games/<%= game.slug %>'"
+          >
+            <div class="game-card-image">
+              <img src="<%= game.thumbnail_url %>" alt="<%= game.title %>" />
+              <% if (game.game_type === 'download') { %>
+              <span class="badge-download">
+                <i class="fas fa-download"></i> Download
+              </span>
+              <% } else { %>
+              <span class="badge-playable">
+                <i class="fas fa-play"></i> Play
+              </span>
+              <% } %>
+            </div>
+
+            <div class="game-card-body">
+              <h4 class="game-card-title"><%= game.title %></h4>
+
+              <div class="game-meta">
+                <span class="game-category">
+                  <i class="fas fa-tag"></i> <%= game.category %>
+                </span>
+              </div>
+
+              <div class="game-stats">
+                <div class="stat-item">
+                  <i class="fas fa-star star-rating"></i>
+                  <span
+                    ><%= game.avg_rating ? game.avg_rating.toFixed(1) : '0.0'
+                    %></span
+                  >
+                </div>
+                <div class="stat-item">
+                  <i class="fas fa-eye"></i>
+                  <span><%= game.play_count %></span>
+                </div>
+              </div>
+
+              <% if (user && user.id === profileUser.id) { %>
+              <div class="game-actions mt-2">
+                <a
+                  href="/games/<%= game.slug %>/edit"
+                  class="btn btn-sm btn-outline-aqua"
+                  onclick="event.stopPropagation()"
+                >
+                  <i class="fas fa-edit"></i> Edit
+                </a>
+              </div>
+              <% } %>
+            </div>
+          </div>
+          <% }); %>
+        </div>
+        <% } else { %>
+        <div class="text-center py-5">
+          <i class="fas fa-gamepad fa-5x text-muted mb-3"></i>
+          <h4>No games uploaded yet</h4>
+          <% if (user && user.id === profileUser.id) { %>
+          <p class="text-muted">Start sharing your games with the community!</p>
+          <a href="/games/create/new" class="btn btn-aqua mt-3">
+            <i class="fas fa-upload"></i> Upload Your First Game
+          </a>
+          <% } %>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>
