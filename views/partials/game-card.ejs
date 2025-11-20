@@ -27,7 +27,7 @@
     <div class="game-stats">
       <div class="stat-item">
         <i class="fas fa-star star-rating"></i>
-        <span><%= game.avg_rating ? game.avg_rating.toFixed(1) : '0.0' %></span>
+        <span><%= Number(game.avg_rating || 0).toFixed(1) %></span>
       </div>
       <div class="stat-item">
         <i class="fas fa-eye"></i>

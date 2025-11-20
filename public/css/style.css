@@ -735,6 +735,19 @@ textarea.form-control {
   width: 100%;
 }
 
+/* Pastikan semua elemen di dalam footer direset agar tidak ada padding berlebih */
+.footer-content {
+  /* Jika Anda membungkus konten footer di dalam div/container lain */
+  padding: 0;
+}
+
+/* Penyesuaian untuk semua list (Quick Links, Categories) */
+.footer ul {
+  list-style: none; /* Hilangkan bullet point default */
+  padding-left: 0; /* Penting: Hilangkan indentasi bawaan */
+  margin-bottom: 0; /* Hilangkan margin bawah default */
+}
+
 .footer-brand {
   color: var(--aqua);
   text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
@@ -743,20 +756,33 @@ textarea.form-control {
 .footer h6 {
   color: var(--aqua);
   margin-bottom: 1rem;
+  font-weight: 600; /* Sedikit penebalan untuk judul */
 }
 
+/* Penyesuaian untuk setiap item list */
 .footer ul li {
   margin-bottom: 0.5rem;
 }
 
+/* Penyesuaian untuk semua link di dalam footer */
 .footer a {
   color: var(--text-muted);
   transition: all 0.3s;
+  display: inline-block; /* Agar bisa di-padding dan diatur dengan baik */
 }
 
 .footer a:hover {
   color: var(--aqua);
-  padding-left: 5px;
+  padding-left: 5px; /* Efek geser saat hover */
+}
+
+/* Penyesuaian teks copyright */
+.footer .text-center {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color); /* Garis pemisah */
 }
 
 /* ==================== ERROR PAGES ==================== */
@@ -1011,7 +1037,8 @@ textarea.form-control {
     font-size: 0.9rem !important;
   }
 
-  .footer {
-    padding: 2rem 0 1rem;
+  .footer .col-md-3,
+  .footer .col-sm-6 {
+    margin-bottom: 1.5rem;
   }
 }
