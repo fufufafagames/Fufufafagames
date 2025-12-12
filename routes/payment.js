@@ -9,6 +9,9 @@ router.get('/buy/:slug', isAuthenticated, paymentController.checkout);
 // Process payment
 router.post('/process', isAuthenticated, paymentController.processPayment);
 
+// Payment History (Place BEFORE dynamic :order_id routes)
+router.get('/history', isAuthenticated, paymentController.history);
+
 // Invoice page
 router.get('/:order_id/invoice', isAuthenticated, paymentController.invoice);
 

@@ -84,6 +84,7 @@
           
           <!-- Menu Items -->
           <li><a class="dropdown-item py-2" href="/profile/<%= user.id %>"><i class="fas fa-user me-2"></i> My Profile</a></li>
+          <li><a class="dropdown-item py-2" href="/payment/history"><i class="fas fa-shopping-bag me-2"></i> My Orders</a></li>
           <li><a class="dropdown-item py-2" href="/profile/settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
           <li><hr class="dropdown-divider bg-secondary opacity-25 my-2" /></li>
           <li><a class="dropdown-item py-2 text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
@@ -111,6 +112,13 @@
       </form>
 
       <!-- Desktop Right Menu -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link <%= typeof title != 'undefined' && title === 'Home' ? 'active' : '' %>" href="/games">
+            <i class="fas fa-gamepad me-1"></i> Games
+          </a>
+        </li>
+      </ul>
       <ul class="navbar-nav ms-auto align-items-center d-none d-lg-flex">
         <% if (user) { %>
         <li class="nav-item">
@@ -170,6 +178,7 @@
               </div>
             </li>
             <li><a class="dropdown-item py-2" href="/profile/<%= user.id %>"><i class="fas fa-user me-2"></i> My Profile</a></li>
+            <li><a class="dropdown-item py-2" href="/payment/history"><i class="fas fa-shopping-bag me-2"></i> My Orders</a></li>
             <li><a class="dropdown-item py-2" href="/profile/settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
             <li><hr class="dropdown-divider bg-secondary opacity-25 my-2" /></li>
             <li><a class="dropdown-item py-2 text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>

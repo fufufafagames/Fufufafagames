@@ -11,7 +11,7 @@
         <div class="card-body">
           <!-- Timer -->
           <% if (transaction.status === 'pending' || transaction.status === 'waiting') { %>
-          <div class="alert alert-warning text-center">
+          <div class="p-3 mb-4 bg-warning bg-opacity-10 border border-warning rounded text-center">
             <h5><i class="fas fa-clock"></i> Payment expires in:</h5>
             <h2 id="countdown-timer" class="mb-0" data-expired="<%= new Date(transaction.expired_at).toISOString() %>">Loading...</h2>
           </div>

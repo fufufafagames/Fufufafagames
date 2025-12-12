@@ -276,34 +276,36 @@ module.exports = {
       if (status === 'waiting' || status === 'pending') {
           try {
             const dokuStatus = await checkPaymentStatus(transaction.invoice_number);
-            
-            // Safely extract status from response
-            if (dokuStatus && dokuStatus.transaction && dokuStatus.transaction.status) {
-              status = dokuStatus.transaction.status.toLowerCase();
-              
-              // Map DOKU status to our status
-              if (status === 'success' && status !== transaction.status) {
-                await Transaction.updateStatus(
-                  transaction.order_id,
-                  'success',
-                  new Date()
-                );
-                await sendPaymentSuccessEmail(transaction);
-              }
-            }
-          } catch (e) {
-              console.log("Error checking DOKU status:", e.message);
+            return res.json({ status: dokuStatus.transaction.status });
+          } catch (error) {
+            console.error('Error checking DOKU status:', error.message);
+            // Fallback to local DB status
+            return res.json({ status: transaction.status });
           }
       }
       
-      res.json({
-        status: status,
-        message: status === 'success' ? 'Payment successful!' : 'Waiting for payment...'
-      });
+      res.json({ status: transaction.status });
       
     } catch (error) {
       console.error('Check status error:', error);
       res.status(500).json({ error: 'Failed to check payment status' });
+    }
+  },
+
+  // Payment History
+  history: async (req, res) => {
+    try {
+      const transactions = await Transaction.getByUserId(req.session.user.id);
+      
+      res.render('payment/history', {
+        title: 'My Orders',
+        transactions,
+        user: req.session.user
+      });
+    } catch (error) {
+      console.error('History error:', error);
+      req.session.error = 'Failed to load order history';
+      res.redirect('/games');
     }
   },
   

@@ -5,12 +5,15 @@
 
 const User = require("../models/User");
 const Game = require("../models/Game");
+const supabase = require('../config/supabase');
+const slugify = require('slugify');
 
 module.exports = {
   /**
    * Display user profile
    */
   show: async (req, res) => {
+    // ... (rest of show method)
     try {
       const userId = parseInt(req.params.id);
 
@@ -68,11 +71,57 @@ module.exports = {
   update: async (req, res) => {
     try {
       const { name, avatar, bio } = req.body;
+      let avatarUrl = avatar; // Default to URL input
+
+      // Handle File Upload
+      if (req.file) {
+        if (!supabase) {
+          throw new Error('Server configuration error: Supabase Storage is not configured.');
+        }
+
+        console.log('Uploading avatar file:', req.file.originalname);
+        console.log('Original size:', (req.file.size / 1024 / 1024).toFixed(2) + ' MB');
+        
+        // Optimize image using sharp
+        const sharp = require('sharp');
+        const optimizedBuffer = await sharp(req.file.buffer)
+          .resize(500, 500, { // Resize to max 500x500
+            fit: 'cover',
+            position: 'center'
+          })
+          .jpeg({ quality: 80 }) // Convert to JPEG with 80% quality
+          .toBuffer();
+          
+        console.log('Optimized size:', (optimizedBuffer.length / 1024 / 1024).toFixed(2) + ' MB');
+
+        const fileName = `${req.session.user.id}-${Date.now()}.jpg`; // Force jpg extension
+        const filePath = `profiles/${fileName}`;
+        
+        const { data, error } = await supabase.storage
+          .from('avatars')
+          .upload(filePath, optimizedBuffer, {
+            contentType: 'image/jpeg',
+            upsert: true
+          });
+
+        if (error) {
+          console.error('Supabase upload error:', error);
+          throw new Error('Failed to upload image: ' + error.message);
+        }
+
+        // Get Public URL
+        const { data: publicData } = supabase.storage
+          .from('avatars')
+          .getPublicUrl(filePath);
+          
+        avatarUrl = publicData.publicUrl;
+        console.log('New avatar URL:', avatarUrl);
+      }
 
       // Update user
       const updatedUser = await User.update(req.session.user.id, {
         name: name || req.session.user.name,
-        avatar: avatar || null,
+        avatar: avatarUrl || null,
         bio: bio || null,
       });
 
@@ -84,7 +133,7 @@ module.exports = {
       res.redirect(`/profile/${req.session.user.id}`);
     } catch (error) {
       console.error("Profile update error:", error);
-      req.session.error = "Failed to update profile";
+      req.session.error = error.message || "Failed to update profile";
       res.redirect("/profile/edit/me");
     }
   },

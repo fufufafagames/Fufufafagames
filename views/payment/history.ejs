@@ -1,0 +1,145 @@
+<%- include('../layouts/header', { title: title }) %>
+<%- include('../partials/navbar') %>
+
+<div class="container mt-4">
+  <div class="card bg-dark text-white border-aqua">
+    <div class="card-header bg-gradient d-flex justify-content-between align-items-center">
+      <h3 class="mb-0"><i class="fas fa-history"></i> My Orders</h3>
+    </div>
+    <div class="card-body">
+      <% if (transactions.length === 0) { %>
+        <div class="text-center py-5">
+          <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+          <h4 class="text-muted">No orders found</h4>
+          <a href="/games" class="btn btn-aqua mt-3">Browse Games</a>
+        </div>
+      <% } else { %>
+        <!-- Desktop View (Table) -->
+        <div class="table-responsive d-none d-md-block">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr class="text-aqua">
+                <th>Date</th>
+                <th>Order ID</th>
+                <th>Game</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% transactions.forEach(trx => { %>
+                <tr>
+                  <td><%= new Date(trx.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+                  <td><small class="text-muted"><%= trx.order_id %></small></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <% if (trx.thumbnail_url) { %>
+                        <img src="<%= trx.thumbnail_url %>" alt="<%= trx.game_title %>" class="rounded me-2" width="40" height="40" style="object-fit: cover;">
+                      <% } else { %>
+                        <div class="bg-secondary rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                          <i class="fas fa-gamepad"></i>
+                        </div>
+                      <% } %>
+                      <span class="fw-bold"><%= trx.game_title %></span>
+                    </div>
+                  </td>
+                  <td>Rp <%= parseInt(trx.amount).toLocaleString('id-ID') %></td>
+                  <td>
+                    <% if (trx.status === 'success') { %>
+                      <span class="badge bg-success rounded-pill">Success</span>
+                    <% } else if (trx.status === 'pending' || trx.status === 'waiting') { %>
+                      <span class="badge bg-warning text-dark rounded-pill">Waiting Payment</span>
+                    <% } else if (trx.status === 'processing') { %>
+                      <span class="badge bg-info text-dark rounded-pill">Processing</span>
+                    <% } else if (trx.status === 'failed') { %>
+                      <span class="badge bg-danger rounded-pill">Failed</span>
+                    <% } else if (trx.status === 'expired') { %>
+                      <span class="badge bg-secondary rounded-pill">Expired</span>
+                    <% } %>
+                  </td>
+                  <td class="text-end">
+                    <% if (trx.status === 'waiting' || trx.status === 'pending') { %>
+                      <a href="/payment/<%= trx.order_id %>/invoice" class="btn btn-sm btn-warning">
+                        <i class="fas fa-receipt"></i> Pay
+                      </a>
+                    <% } else if (trx.status === 'success') { %>
+                      <a href="/games/<%= trx.game_slug %>" class="btn btn-sm btn-success">
+                        <i class="fas fa-play"></i> Play
+                      </a>
+                    <% } else { %>
+                       <a href="/payment/<%= trx.order_id %>/status" class="btn btn-sm btn-outline-light">
+                        <i class="fas fa-info-circle"></i> Details
+                      </a>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile View (Cards) -->
+        <div class="d-md-none">
+          <% transactions.forEach(trx => { %>
+            <div class="card bg-dark-secondary mb-3 border-secondary">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div class="d-flex align-items-center">
+                    <% if (trx.thumbnail_url) { %>
+                      <img src="<%= trx.thumbnail_url %>" alt="<%= trx.game_title %>" class="rounded me-2" width="50" height="50" style="object-fit: cover;">
+                    <% } else { %>
+                      <div class="bg-secondary rounded me-2 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                        <i class="fas fa-gamepad fa-lg"></i>
+                      </div>
+                    <% } %>
+                    <div>
+                      <h6 class="mb-0 fw-bold text-white"><%= trx.game_title %></h6>
+                      <small class="text-muted"><%= trx.order_id %></small>
+                    </div>
+                  </div>
+                  <% if (trx.status === 'success') { %>
+                    <span class="badge bg-success rounded-pill">Success</span>
+                  <% } else if (trx.status === 'pending' || trx.status === 'waiting') { %>
+                    <span class="badge bg-warning text-dark rounded-pill">Pending</span>
+                  <% } else if (trx.status === 'processing') { %>
+                    <span class="badge bg-info text-dark rounded-pill">Process</span>
+                  <% } else if (trx.status === 'failed') { %>
+                    <span class="badge bg-danger rounded-pill">Failed</span>
+                  <% } else if (trx.status === 'expired') { %>
+                    <span class="badge bg-secondary rounded-pill">Expired</span>
+                  <% } %>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                  <div>
+                    <div class="text-aqua fw-bold">Rp <%= parseInt(trx.amount).toLocaleString('id-ID') %></div>
+                    <small class="text-muted"><%= new Date(trx.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) %></small>
+                  </div>
+                  
+                  <div>
+                    <% if (trx.status === 'waiting' || trx.status === 'pending') { %>
+                      <a href="/payment/<%= trx.order_id %>/invoice" class="btn btn-sm btn-warning">
+                        <i class="fas fa-receipt"></i> Pay
+                      </a>
+                    <% } else if (trx.status === 'success') { %>
+                      <a href="/games/<%= trx.game_slug %>" class="btn btn-sm btn-success">
+                        <i class="fas fa-play"></i> Play
+                      </a>
+                    <% } else { %>
+                       <a href="/payment/<%= trx.order_id %>/status" class="btn btn-sm btn-outline-light">
+                        <i class="fas fa-info-circle"></i> Details
+                      </a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

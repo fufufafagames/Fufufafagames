@@ -125,8 +125,8 @@ async function checkPaymentStatus(invoiceNumber) {
   const requestId = `REQ-${Date.now()}`;
   const timestamp = new Date().toISOString();
   
-  // DOKU Checkout status endpoint
-  const requestTarget = `/checkout/v1/payment/${invoiceNumber}`;
+  // DOKU Orders status endpoint
+  const requestTarget = `/orders/v1/status/${invoiceNumber}`;
   
   // For GET requests, NO request body and NO digest
   const componentSignature = 
