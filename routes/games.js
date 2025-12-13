@@ -28,6 +28,7 @@ router.post(
   upload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "video", maxCount: 1 },
+    { name: "icon", maxCount: 1 },
   ]),
   gameValidation,
   handleValidationErrors,
@@ -40,6 +41,7 @@ router.put(
   upload.fields([
     { name: "thumbnail", maxCount: 1 },
     { name: "video", maxCount: 1 },
+    { name: "icon", maxCount: 1 },
   ]),
   gameValidation,
   handleValidationErrors,

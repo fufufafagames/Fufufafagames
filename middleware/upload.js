@@ -5,7 +5,8 @@ const fs = require('fs');
 // Ensure upload directories exist
 const uploadDirs = [
     'public/uploads/thumbnails',
-    'public/uploads/videos'
+    'public/uploads/videos',
+    'public/uploads/icons' // [NEW] Icon folder
 ];
 
 uploadDirs.forEach(dir => {
@@ -21,6 +22,8 @@ const storage = multer.diskStorage({
             cb(null, 'public/uploads/thumbnails');
         } else if (file.fieldname === 'video') {
             cb(null, 'public/uploads/videos');
+        } else if (file.fieldname === 'icon') {
+            cb(null, 'public/uploads/icons'); // [NEW] Handle icon
         } else {
             cb(new Error('Invalid field name'), null);
         }
@@ -34,10 +37,10 @@ const storage = multer.diskStorage({
 
 // File filter
 const fileFilter = (req, file, cb) => {
-    if (file.fieldname === 'thumbnail') {
+    if (file.fieldname === 'thumbnail' || file.fieldname === 'icon') { // [NEW] Allow icon
         // Accept images only
         if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-            return cb(new Error('Only image files are allowed for thumbnails!'), false);
+            return cb(new Error('Only image files are allowed!'), false);
         }
     } else if (file.fieldname === 'video') {
         // Accept videos only

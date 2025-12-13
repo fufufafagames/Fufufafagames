@@ -20,55 +20,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (thumbnailInput) {
         thumbnailInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            // Preview immediately
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Update preview if exists, or create one
-                let img = document.querySelector('.thumbnail-preview-img');
-                if (!img) {
-                    // If no existing preview image, we might need to insert one
-                    // But for now let's assume the EJS has a placeholder or we update the src
-                    // If the user is in "create" mode, there might not be an img tag yet.
-                    // We'll handle the UI update in the EJS, this script assumes specific IDs/classes
-                }
-                
-                // Resize logic
-                const image = new Image();
-                image.src = e.target.result;
-                image.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    let width = image.width;
-                    let height = image.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(image, 0, 0, width, height);
-
-                    // Show resized preview
-                    const dataUrl = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
-                    if (thumbnailPreview) {
-                        thumbnailPreview.src = dataUrl;
-                        thumbnailPreview.style.display = 'block';
-                    }
-
-                    // Convert to blob for upload
-                    canvas.toBlob(function(blob) {
-                        resizedThumbnailBlob = blob;
-                        console.log(`Image resized: ${Math.round(blob.size/1024)}KB`);
-                    }, 'image/jpeg', JPEG_QUALITY);
-                };
-            };
-            reader.readAsDataURL(file);
+            handleImagePreview(e.target, thumbnailPreview, MAX_WIDTH, JPEG_QUALITY, function(blob) {
+                resizedThumbnailBlob = blob;
+            });
         });
+    }
+
+    // [NEW] Icon Preview Handler
+    const iconInput = document.getElementById('icon');
+    const iconPreview = document.getElementById('icon-preview');
+    let resizedIconBlob = null; // We might want to resize icons too
+
+    if (iconInput) {
+        iconInput.addEventListener('change', function(e) {
+            handleImagePreview(e.target, iconPreview, 300, JPEG_QUALITY, function(blob) { // Smaller max width for icon
+                 resizedIconBlob = blob;
+            });
+        });
+    }
+
+    // Helper function to avoid code duplication
+    function handleImagePreview(input, previewElement, maxWidth, quality, callback) {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const image = new Image();
+            image.src = e.target.result;
+            image.onload = function() {
+                const canvas = document.createElement('canvas');
+                let width = image.width;
+                let height = image.height;
+
+                if (width > maxWidth) {
+                    height *= maxWidth / width;
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0, width, height);
+
+                const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                if (previewElement) {
+                    previewElement.src = dataUrl;
+                    previewElement.style.display = 'block';
+                }
+
+                canvas.toBlob(function(blob) {
+                    if(callback) callback(blob);
+                    console.log(`Image resized: ${Math.round(blob.size/1024)}KB`);
+                }, 'image/jpeg', quality);
+            };
+        };
+        reader.readAsDataURL(file);
     }
 
     if (form) {
@@ -86,6 +93,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Replace thumbnail with resized version if available
             if (resizedThumbnailBlob) {
                 formData.set('thumbnail', resizedThumbnailBlob, 'thumbnail.jpg');
+            }
+            
+            // [NEW] Append resized icon
+            if (typeof resizedIconBlob !== 'undefined' && resizedIconBlob) {
+                formData.set('icon', resizedIconBlob, 'icon.jpg');
             }
 
             const xhr = new XMLHttpRequest();

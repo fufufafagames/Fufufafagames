@@ -133,6 +133,18 @@
             <input type="url" class="form-control mt-2" id="thumbnail_url" name="thumbnail_url" placeholder="https://example.com/image.jpg">
           </div>
 
+          <!-- [NEW] Icon Upload Section -->
+          <div class="mb-3">
+            <label for="icon" class="form-label">
+                <i class="fas fa-icons"></i> Game Icon (Square 1:1)
+            </label>
+            <input type="file" class="form-control" id="icon" name="icon" accept="image/*">
+            <div class="mt-2">
+                <img id="icon-preview" src="" alt="Icon Preview" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; display: none;">
+            </div>
+            <small class="text-white">Recommended for new Homepage design</small>
+          </div>
+
           <div class="mb-3">
             <label for="video" class="form-label">
                 <i class="fas fa-video"></i> Game Video/Trailer

@@ -4,6 +4,7 @@
  */
 
 const Game = require("../models/Game");
+const Event = require("../models/Event"); // [NEW]
 const Rating = require("../models/Rating");
 const Transaction = require("../models/Transaction");
 const slugify = require("slugify");
@@ -35,12 +36,40 @@ module.exports = {
   landing: async (req, res) => {
     try {
       // Ambil 6 featured games (games dengan play_count & rating tertinggi)
-      const featuredGames = await Game.getFeatured(6); // Render landing page
+      // Ambil 6 featured games (games dengan play_count & rating tertinggi)
+      // Ambil 7 featured games (sesuai request user)
+      const featuredGames = await Game.getFeatured(7); 
+      
+      // [NEW] Ambil Recommended Games (Random)
+      const recommendedGames = await Game.getRandom(6);
+
+      // [NEW] Ambil PC Games (Download Type)
+      const pcGames = await Game.getType('download', 8);
+
+      // [NEW] Ambil Active Event
+      const activeEvent = await Event.getActive();
+
+      // [NEW] Ambil Latest Updated Games
+      const latestGames = await Game.getLatest(15); 
+
+      // [NEW] Ambil Popular Category Data
+      const popularCategoryName = await Game.getMostPopularCategory();
+      let popularCategoryGames = [];
+      if (popularCategoryName) {
+        popularCategoryGames = await Game.getByCategory(popularCategoryName, 12); // Fetch 12 items for 2 pages
+      }
+
       const categories = await getCategories();
 
       res.render("index", {
         title: "FUFUFAFAGAMES - Discover Amazing Games",
         featuredGames,
+        recommendedGames, // [NEW]
+        pcGames, // [NEW]
+        activeEvent, // [NEW]
+        latestGames, // [NEW]
+        popularCategoryName, // [NEW]
+        popularCategoryGames, // [NEW]
         categories,
       });
     } catch (error) {
@@ -48,16 +77,13 @@ module.exports = {
       res.render("index", {
         title: "FUFUFAFAGAMES - Discover Amazing Games",
         featuredGames: [],
-        categories: [
-          "Action",
-          "Puzzle",
-          "RPG",
-          "Adventure",
-          "Strategy",
-          "Casual",
-          "Sports",
-          "Racing",
-        ],
+        recommendedGames: [],
+        pcGames: [],
+        activeEvent: null,
+        latestGames: [],
+        popularCategoryName: null,
+        popularCategoryGames: [],
+        categories: [],
       });
     }
   },
@@ -217,6 +243,16 @@ index: async (req, res) => {
           finalThumbnailUrl = "https://via.placeholder.com/400x300/1a1a2e/00D9FF?text=Game";
       }
 
+      // [NEW] Handle Icon Upload
+      let finalIconUrl = null;
+      if (req.files && req.files['icon']) {
+          finalIconUrl = '/uploads/icons/' + req.files['icon'][0].filename;
+      } else {
+          // Default icon placeholder if none provided
+           // We can leave it null or set a default. Let's leave null for now or dynamic in view.
+           // Actually, the frontend code uses placehold.co if null, so null is fine.
+      }
+
       let finalVideoUrl = video_url;
       if (req.files && req.files['video']) {
         finalVideoUrl = '/uploads/videos/' + req.files['video'][0].filename;
@@ -255,6 +291,7 @@ index: async (req, res) => {
         github_url,
         thumbnail_url: finalThumbnailUrl,
         video_url: finalVideoUrl,
+        icon_url: finalIconUrl, // [NEW]
         game_type,
         category: finalCategory,
         tags: JSON.stringify(tags ? tags.split(",").map((t) => t.trim()) : []),
@@ -342,8 +379,8 @@ index: async (req, res) => {
    * Update game
    */
    update: async (req, res) => {
+    const game = await Game.findBySlug(req.params.slug); // Needed for old file deletion
     try {
-      const game = await Game.findBySlug(req.params.slug);
       if (!game) {
         req.session.error = "Game not found";
         return res.redirect("/games");
@@ -356,15 +393,6 @@ index: async (req, res) => {
 
       const { title, description, github_url, thumbnail_url, video_url, category, new_category, tags, price_type, price } = req.body;
 
-      // 🔍 FULL DEBUG
-      console.log('\n========== UPDATE GAME FULL DEBUG ==========');
-      console.log('Raw req.body:', JSON.stringify(req.body, null, 2));
-      console.log('Extracted price_type:', price_type);
-      console.log('Type:', typeof price_type);
-      console.log('Value:', `"${price_type}"`);
-      console.log('Comparison: price_type === "paid":', price_type === 'paid');
-      console.log('============================================\n');
-
       // Handle file uploads
       let finalThumbnailUrl = game.thumbnail_url;
       if (req.files && req.files['thumbnail']) {
@@ -375,6 +403,17 @@ index: async (req, res) => {
         finalThumbnailUrl = '/uploads/thumbnails/' + req.files['thumbnail'][0].filename;
       } else if (thumbnail_url) {
         finalThumbnailUrl = thumbnail_url;
+      }
+
+      // [NEW] Handle Icon Update
+      let finalIconUrl = game.icon_url;
+      if (req.files && req.files['icon']) {
+          // Delete old icon
+          if (game.icon_url && game.icon_url.startsWith('/uploads/')) {
+              const oldPath = path.join(__dirname, '../public', game.icon_url);
+              if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+          }
+          finalIconUrl = '/uploads/icons/' + req.files['icon'][0].filename;
       }
 
       let finalVideoUrl = game.video_url;
@@ -412,17 +451,13 @@ index: async (req, res) => {
         }
       }
 
-      console.log('🎯 FINAL VALUES:');
-      console.log('finalPriceType:', finalPriceType);
-      console.log('finalPrice:', finalPrice);
-      console.log('---\n');
-
       await Game.update(req.params.slug, {
         title,
         description,
         github_url,
         thumbnail_url: finalThumbnailUrl,
         video_url: finalVideoUrl,
+        icon_url: finalIconUrl, // [NEW]
         category: finalCategory,
         tags: JSON.stringify(tags ? tags.split(",").map((t) => t.trim()) : []),
         game_type,

@@ -11,7 +11,12 @@ include('../partials/navbar') %>
         />
 
         <div class="p-4">
-          <h1 class="game-detail-title"><%= game.title %></h1>
+          <div class="d-flex align-items-center mb-3">
+            <% if (game.icon_url) { %>
+                <img src="<%= game.icon_url %>" alt="Icon" class="me-3 rounded-4 border border-secondary" style="width: 80px; height: 80px; object-fit: cover; box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);">
+            <% } %>
+            <h1 class="game-detail-title m-0"><%= game.title %></h1>
+          </div>
 
           <div class="game-detail-meta">
             <span class="game-category">

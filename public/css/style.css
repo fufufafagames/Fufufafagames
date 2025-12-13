@@ -27,7 +27,9 @@
 }
 
 html {
-  background-color: var(--dark-primary); /* Fix white flash - Solid color for overscroll */
+  background-color: var(
+    --dark-primary
+  ); /* Fix white flash - Solid color for overscroll */
   min-height: 100%;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
@@ -130,7 +132,11 @@ main {
 }
 
 .profile-header {
-  background: linear-gradient(135deg, var(--dark-tertiary), rgba(0, 217, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    var(--dark-tertiary),
+    rgba(0, 217, 255, 0.1)
+  );
   border-bottom: 1px solid rgba(0, 217, 255, 0.2);
 }
 
@@ -159,21 +165,21 @@ main {
   .search-form {
     width: 100%;
   }
-  
+
   /* Mobile Navbar Adjustments */
   .navbar-brand {
     font-size: 1.2rem;
   }
-  
+
   .navbar-toggler {
     border: none;
     padding: 0;
   }
-  
+
   .navbar-toggler:focus {
     box-shadow: none;
   }
-  
+
   /* Ensure dropdowns on mobile don't overflow */
   .custom-profile-menu {
     position: absolute;
@@ -1244,14 +1250,14 @@ textarea.form-control {
     flex-wrap: nowrap; /* Prevent wrapping */
     gap: 0.5rem;
   }
-  
+
   .play-action-left,
   .play-action-right {
     width: auto;
     flex: 0 0 auto; /* Don't grow or shrink */
     justify-content: center;
   }
-  
+
   .play-title-section {
     width: auto;
     flex: 1; /* Take remaining space */
@@ -2211,15 +2217,14 @@ textarea.form-control {
 .carousel-container {
   position: relative;
   width: 100%;
-  height: 470px;
+  height: 400px; /* Reduced from 470px to fix bottom gap */
   background: transparent;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 0 !important;
 }
 
 .carousel-container .slide {
   width: 100%;
-  height: 100%;
 }
 
 .carousel-container .slide .item {
@@ -2229,7 +2234,7 @@ textarea.form-control {
   top: 80%;
   transform: translate(0, -50%);
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   background-position: 50% 50%;
   background-size: cover;
   display: inline-block;
@@ -2249,22 +2254,22 @@ textarea.form-control {
 }
 
 .carousel-container .slide .item:nth-child(3) {
-  left: 50%;
+  left: 65%;
   z-index: 2;
 }
 
 .carousel-container .slide .item:nth-child(4) {
-  left: calc(50% + 200px);
+  left: calc(65% + 220px);
   z-index: 3;
 }
 
 .carousel-container .slide .item:nth-child(5) {
-  left: calc(50% + 400px);
+  left: calc(65% + 440px);
   z-index: 4;
 }
 
 .carousel-container .slide .item:nth-child(n + 6) {
-  left: calc(50% + 600px);
+  left: calc(65% + 660px);
   opacity: 0;
 }
 
@@ -2276,10 +2281,10 @@ textarea.form-control {
   text-align: left;
   color: #eee;
   transform: translate(0, -50%);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   display: none;
   z-index: 10;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .carousel-container .slide .item:nth-child(2) .content {
@@ -2340,7 +2345,7 @@ textarea.form-control {
   gap: 20px;
   position: absolute;
   bottom: 30px;
-  left: 50%;
+  left: 65%;
   transform: translateX(-50%);
   z-index: 100;
 }
@@ -2382,7 +2387,7 @@ textarea.form-control {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 0;
 }
 
@@ -2418,7 +2423,7 @@ textarea.form-control {
 .video-spinner {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 65%;
   transform: translate(-50%, -50%);
   z-index: 10;
   display: none;
@@ -2493,7 +2498,7 @@ textarea.form-control {
     bottom: 70px;
     right: 20px;
   }
-  
+
   .volume-toggle i {
     font-size: 1.1rem;
   }
@@ -2506,7 +2511,7 @@ textarea.form-control {
     bottom: 60px;
     right: 15px;
   }
-  
+
   .volume-toggle i {
     font-size: 1rem;
   }
@@ -2542,9 +2547,9 @@ textarea.form-control {
   }
 
   /* Adjust active item to fully cover */
-  .carousel-container .slide .item:nth-child(1), 
+  .carousel-container .slide .item:nth-child(1),
   .carousel-container .slide .item:nth-child(2) {
-      border-radius: 0;
+    border-radius: 0;
   }
 
   /* Adjust card positions */
@@ -2557,7 +2562,7 @@ textarea.form-control {
   .carousel-container .slide .item:nth-child(5) {
     left: calc(65% + 220px);
   }
-  
+
   /* Stack content better */
   .item .content {
     left: 20px;
@@ -2588,13 +2593,13 @@ textarea.form-control {
     padding: 8px 20px;
     font-size: 0.85rem;
   }
-  
+
   /* Adjust nav buttons */
   .carousel-nav {
     bottom: 20px;
     gap: 15px;
   }
-  
+
   .carousel-nav button {
     width: 40px;
     height: 40px;
@@ -2605,16 +2610,36 @@ textarea.form-control {
 /* ==================== NAVBAR MOBILE FIXES (FINAL) ==================== */
 
 /* 1. Prevent Wrapping on Mobile Navbar Container */
+/* 1. Prevent Wrapping on Mobile Navbar Container (Modified to allow Menu Wrap) */
 @media (max-width: 991.98px) {
   .navbar .container {
-      flex-wrap: nowrap !important; /* Force single line */
-      padding-left: 10px !important;
-      padding-right: 10px !important;
+    flex-wrap: wrap !important; /* Allow wrapping so menu goes to bottom */
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    justify-content: space-between !important; /* Distribute top items widely */
   }
+
+  /* Force top items closely together if needed, but space-between is usually best */
   
   /* Reset Brand Margin */
   .navbar-brand {
-      margin-right: auto !important; /* Push right side to the end */
+    margin-right: auto !important; /* Push right side to the end */
+  }
+  
+  /* CENTER THE DROPDOWN MENU */
+  .navbar-collapse {
+    text-align: center !important;
+    width: 100% !important;
+    flex-basis: 100% !important;
+    order: 4 !important; /* Ensure it comes last */
+    margin-top: 15px;
+    background: rgba(0,0,0,0.5); /* Optional: slight background for contrast */
+    border-radius: 10px;
+    padding: 10px;
+  }
+  
+  .navbar-nav {
+    align-items: center !important;
   }
 }
 
@@ -2628,7 +2653,7 @@ textarea.form-control {
 /* 3. Tiny Mobile Login Button */
 .navbar .btn-auth {
   /* Box adjustments: Height increased slightly, Width optimized, Margin added */
-  padding: 5px 8px !important; 
+  padding: 5px 8px !important;
   font-size: 11px !important;
   line-height: normal !important; /* Allow natural height */
   height: auto !important;
@@ -2644,36 +2669,36 @@ textarea.form-control {
 
 /* 4. Search Icon Size */
 .navbar .fa-search {
-    font-size: 1rem !important;
+  font-size: 1rem !important;
 }
 
 /* Extra Small Phones */
 @media (max-width: 375px) {
   .brand-text {
-      font-size: 0.8rem !important;
+    font-size: 0.8rem !important;
   }
   .navbar .container {
-      padding-left: 5px !important;
-      padding-right: 5px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
   }
   .navbar .btn-auth {
-      padding: 3px 6px !important;
-      font-size: 10px !important;
+    padding: 3px 6px !important;
+    font-size: 10px !important;
   }
 }
 
 /* Desktop Styles */
 @media (min-width: 992px) {
   .brand-text {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
   .navbar .btn-auth {
-      font-size: 0.9rem !important;
-      padding: 0.375rem 0.75rem !important;
-      border-width: 1px !important; 
+    font-size: 0.9rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-width: 1px !important;
   }
   .navbar .fa-search {
-      font-size: 1.2rem !important;
+    font-size: 1.2rem !important;
   }
 }
 
@@ -2682,7 +2707,7 @@ textarea.form-control {
 .playstore-grid {
   display: grid;
   /* Responsif: Mengatur jumlah kolom otomatis berdasarkan lebar layar */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
 }
@@ -2731,7 +2756,10 @@ textarea.form-control {
 /* Ikon Play di tengah saat hover (Opsional, biar makin kerasa game) */
 .playstore-card .overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
@@ -2764,7 +2792,7 @@ textarea.form-control {
   border-radius: 10px; /* Sedikit rounded seperti icon HP */
   object-fit: cover;
   margin-right: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Info Text Wrapper */
@@ -2810,18 +2838,18 @@ textarea.form-control {
 
 /* Container Utama untuk Geser Samping */
 .horizontal-scroll-container {
-  display: flex;              /* Susun menyamping (bukan grid) */
-  overflow-x: auto;           /* Izinkan scroll ke samping */
-  gap: 20px;                  /* Jarak antar kartu */
+  display: flex; /* Susun menyamping (bukan grid) */
+  overflow-x: auto; /* Izinkan scroll ke samping */
+  gap: 20px; /* Jarak antar kartu */
   padding: 10px 40px 25px 40px; /* Padding bawah agak besar biar bayangan/shadow tidak kepotong */
-  
+
   /* Fitur Mewah: Snap Effect (Biar pas digeser berhentinya rapi di kartu) */
-  scroll-snap-type: x mandatory; 
+  scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  
+
   /* Sembunyikan Scrollbar (biar bersih kayak aplikasi native) */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Sembunyikan Scrollbar untuk Chrome/Safari/Opera */
@@ -2831,32 +2859,302 @@ textarea.form-control {
 
 /* Aturan Khusus Kartu di dalam Scroll Container */
 .horizontal-scroll-container .playstore-card {
-  flex: 0 0 auto;    /* PENTING: Jangan biarkan kartu mengecil/tergencet */
-  width: 280px;      /* Lebar tetap kartu */
+  flex: 0 0 auto; /* PENTING: Jangan biarkan kartu mengecil/tergencet */
+  width: 280px; /* Lebar tetap kartu */
   scroll-snap-align: start; /* Titik berhenti snap */
 }
 
 /* Untuk ICON DI CAROUSEL */
 /* Ikon di dalam Carousel Hero */
 .hero-game-icon {
-    margin-bottom: 15px; /* Jarak antara ikon dan judul game */
-    animation: fadeInDown 1s ease; /* Efek animasi muncul dari atas (opsional) */
+  margin-bottom: 15px; /* Jarak antara ikon dan judul game */
+  animation: fadeInDown 1s ease; /* Efek animasi muncul dari atas (opsional) */
 }
 
 .hero-game-icon img {
-    width: 80px;      /* Ukuran ikon */
-    height: 80px;
-    object-fit: cover;
-    border-radius: 18px; /* Lengkungan sudut (squircle style) */
-    box-shadow: 0 4px 15px rgba(0, 217, 255, 0.4); /* Efek glowing cyan */
-    border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 80px; /* Ukuran ikon */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 18px; /* Lengkungan sudut (squircle style) */
+  box-shadow: 0 4px 15px rgba(0, 217, 255, 0.4); /* Efek glowing cyan */
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Penyesuaian Responsif untuk HP */
 @media (max-width: 768px) {
-    .hero-game-icon img {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-    }
+  .hero-game-icon img {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+  }
 }
+
+/* USER TEST: HIDE PORTRAIT CARDS */
+.carousel-container .slide .item:nth-child(n+3) { display: none !important; }
+
+/* LATEST UPDATED SECTION - 1:1 ICONS */
+.latest-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 5px 25px 5px;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.latest-scroll-container::-webkit-scrollbar { display: none; }
+
+.latest-game-card {
+  flex: 0 0 calc(20% - 16px); /* 5 items per row on desktop */
+  text-decoration: none;
+  scroll-snap-align: start;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.latest-game-card:hover { transform: translateY(-5px); }
+
+.latest-game-icon {
+  width: 100%;
+  aspect-ratio: 1/1; /* 1:1 RATIO */
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 10px;
+}
+.latest-game-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.latest-game-title {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .latest-game-card { flex: 0 0 calc(25% - 15px); } /* 4 items tablet */
+}
+@media (max-width: 768px) {
+  .latest-game-card { flex: 0 0 calc(33.333% - 14px); } /* 3 items mobile (Requested) */
+  .latest-game-icon { border-radius: 14px; }
+}
+
+
+/* FIX MOBILE ICONS CONSISTENCY */
+@media (max-width: 768px) {
+  .latest-scroll-container {
+    gap: 12px;
+    padding: 10px 10px 25px 10px;
+  }
+  .latest-game-card {
+    flex: 0 0 calc(33.333% - 8px) !important;
+    max-width: calc(33.333% - 8px) !important;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+  .latest-game-icon {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1 !important;
+    object-fit: cover;
+  }
+}
+
+/* POPULAR CATEGORY GRID */
+.popular-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .popular-category-grid {
+    grid-template-columns: repeat(3, 1fr); /* Force 3 columns on mobile too */
+    gap: 10px;
+  }
+}
+
+
+/* REMOVE UNDERLINE FOR POPULAR CATEGORY */
+.popular-category-header {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+.popular-category-header::after {
+  display: none !important;
+  content: none !important;
+}
+
+
+/* FIXES FROM USER FEEDBACK */
+.card-banner img {
+  display: block !important; /* Fix bottom space */
+}
+
+.event-text-box .btn-aqua {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .popular-category-header {
+    font-size: 1.1rem !important; /* Smaller font for mobile 1-line */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .popular-category-grid {
+    grid-template-columns: 1fr !important; /* 1 column mobile */
+    gap: 15px;
+  }
+  .popular-item {
+    width: 100%;
+  }
+}
+
+
+/* FINAL UI REFINEMENTS */
+
+/* 1. Fix Image Bottom Space strictly */
+.card-banner {
+  line-height: 0 !important;
+  font-size: 0 !important;
+}
+.card-banner img {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 2. Fix Button Centering */
+.event-text-box .btn-aqua {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 20px !important;
+}
+
+/* 3. Mobile Header & Spacing Fixes */
+@media (max-width: 768px) {
+  /* Specific selector for Recommended Header to override inline styles */
+  .recommended-header-container {
+    padding: 0 15px !important; /* Override the 40px inline padding */
+  }
+  .recommended-header-container h4 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
+  }
+  .recommended-header-container a {
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+  }
+  
+  /* 4. Fix Popular Category Margin */
+  .popular-category-header-container {
+    margin-bottom: 10px !important; 
+  }
+}
+
+/* Desktop Margin Fix as well if needed */
+.popular-category-header-container {
+  margin-bottom: 10px !important;
+}
+
+.popular-category-grid {
+  margin-top: 0 !important;
+}
+
+/* FINAL SPACING FIXES */
+.carousel-container {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important; 
+}
+.landing-section {
+  margin-bottom: 20px !important; 
+}
+
+/* MOBILE CAROUSEL HEIGHT FIX */
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 280px !important; 
+  }
+  .content .name {
+    font-size: 30px !important;
+  }
+  .content .des {
+    font-size: 0.9rem !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+
+/* FINAL SPACING FIXES v2 */
+.landing-section {
+  margin-bottom: 20px !important; /* Explicitly controlled spacing */
+}
+
+
+/* FIX: Reduce spacing in Popular Category Section (Balanced) */
+.popular-category-section {
+  padding: 10px 15px !important; /* Balanced padding */
+  margin-bottom: 0 !important;
+}
+
+.popular-category-section .section-title {
+  margin-bottom: 0 !important;
+  line-height: 1.2;
+}
+
+.popular-category-section .section-title::after {
+  margin-top: 5px !important;
+  display: block; /* Restore separator */
+}
+
+/* Control the gap via the container (Standard 15px) */
+.popular-category-header-container {
+  margin-bottom: 15px !important; /* "Not too close, not too far" */
+  min-height: auto !important;
+}
+
+.popular-category-grid {
+  margin-top: 0 !important;
+  gap: 15px !important; 
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  .popular-category-section {
+    padding: 10px 15px !important;
+  }
+  
+  .popular-category-section .section-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .popular-category-header-container {
+    margin-bottom: 15px !important;
+  }
+  
+  .popular-category-grid {
+    gap: 12px !important; 
+  }
+}
+

@@ -109,6 +109,25 @@
                         <input type="url" class="form-control mt-2" id="thumbnail_url" name="thumbnail_url" value="<%= game.thumbnail_url %>">
                     </div>
 
+                    <!-- [NEW] Icon Upload Section -->
+                    <div class="mb-3">
+                        <label for="icon" class="form-label">
+                            <i class="fas fa-icons"></i> Game Icon (Square 1:1)
+                        </label>
+                        <% if (game.icon_url) { %>
+                            <div class="mb-2">
+                                <img id="icon-preview" src="<%= game.icon_url %>" alt="Current Icon" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
+                                <small class="text-white d-block">Current icon</small>
+                            </div>
+                        <% } else { %>
+                            <div class="mb-2">
+                                <img id="icon-preview" src="" alt="Icon Preview" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; display: none;">
+                            </div>
+                        <% } %>
+                        <input type="file" class="form-control" id="icon" name="icon" accept="image/*">
+                        <small class="text-white">Used for cards in Homepage</small>
+                    </div>
+
                     <div class="mb-3">
                         <label for="video" class="form-label">
                             <i class="fas fa-video"></i> Game Video/Trailer

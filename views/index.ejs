@@ -464,10 +464,10 @@
     <%- include('partials/navbar') %>
 
     <!-- Carousel Section -->
-    <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
+    <div class="container" style="margin-top: 30px; margin-bottom: 20px;">
 
       <div class="parallax-section bg-game-hero d-flex align-items-center justify-content-center" 
-        style="min-height: 400px; padding: 0; border-radius: 30px; overflow: hidden; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        style="padding: 0; border-radius: 30px; overflow: hidden; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
           <div class="carousel-container">
               <div class="slide">
                   <% featuredGames.forEach((game, index) => { %>
@@ -637,68 +637,61 @@
       </div>
 
     </div> -->
-    <div class="container" style="margin-bottom: 50px;">
+    <div class="container" style="margin-bottom: 30px;">
 
-      <div class="d-flex justify-content-between align-items-center mb-3" style="padding: 0 40px;">
+      <div class="d-flex justify-content-between align-items-center mb-3 recommended-header-container" style="padding: 0 40px;">
         <h4 class="text-white fw-bold">Recommended for You</h4>
-        <a href="/all-games" class="text-info text-decoration-none small">Lihat Semua <i class="fas fa-arrow-right"></i></a>
+        <a href="/all-games" class="text-info text-decoration-none small">See All <i class="fas fa-arrow-right"></i></a>
       </div>
 
       <div class="horizontal-scroll-container">
-        <% 
-          // --- HACK VISUALISASI START ---
-          // Kita bikin array baru yang kosong
-          let dummyGames = [];
-          
-          // Kita ulang 10 kali data yang ada, biar total jadi 20 game (kalau aslinya 2)
-          for(let i = 0; i < 10; i++) {
-              dummyGames = dummyGames.concat(featuredGames);
-          }
-          // --- HACK VISUALISASI END ---
-        %>
-
-        <% dummyGames.forEach((game, index) => { %>
-          
-          <a href="/games/<%= game.slug %>" class="playstore-card">
+        <% if (recommendedGames && recommendedGames.length > 0) { %>
+            <% recommendedGames.forEach((game, index) => { %>
             
-            <div class="card-banner">
-              <img src="<%= game.banner_url || game.thumbnail_url || 'https://via.placeholder.com/600x337' %>" alt="<%= game.title %>" loading="lazy">
-              <div class="overlay">
-                  <i class="fas fa-play"></i>
-              </div>
-            </div>
-
-            <div class="card-details">
-              
-              <div class="game-logo">
-                <% if (game.icon_url && game.icon_url !== '') { %>
-                    <img src="<%= game.icon_url %>" alt="Icon" 
-                          onerror="this.onerror=null;this.src='https://placehold.co/100x100/2a2a40/00D9FF?text=<%= game.title.charAt(0) %>';">
-                <% } else { %>
-                    <img src="https://placehold.co/100x100/2a2a40/00D9FF?text=<%= game.title.charAt(0) %>" alt="Icon">
-                <% } %>
-              </div>
-
-              <div class="game-info-text">
-                <h3 class="game-title" title="<%= game.title %>"><%= game.title %> #<%= index + 1 %></h3>
+            <a href="/games/<%= game.slug %>" class="playstore-card">
                 
-                <div class="game-meta-row">
-                  <span class="game-price">
-                      <%= game.price === 0 ? 'Free' : 'Rp ' + game.price.toLocaleString() %>
-                  </span>
-                  <span class="game-rating">
-                      <%= game.rating || '4.5' %> <i class="fas fa-star"></i>
-                  </span>
+                <div class="card-banner">
+                <img src="<%= game.banner_url || game.thumbnail_url || 'https://via.placeholder.com/600x337' %>" alt="<%= game.title %>" loading="lazy">
+                <div class="overlay">
+                    <i class="fas fa-play"></i>
                 </div>
-              </div>
+                </div>
 
-            </div>
-          </a>
-        <% }); %>
+                <div class="card-details">
+                
+                <div class="game-logo">
+                    <% if (game.icon_url && game.icon_url !== '') { %>
+                        <img src="<%= game.icon_url %>" alt="Icon" 
+                            onerror="this.onerror=null;this.src='https://placehold.co/100x100/2a2a40/00D9FF?text=<%= game.title.charAt(0) %>';">
+                    <% } else { %>
+                        <img src="https://placehold.co/100x100/2a2a40/00D9FF?text=<%= game.title.charAt(0) %>" alt="Icon">
+                    <% } %>
+                </div>
+
+                <div class="game-info-text">
+                    <h3 class="game-title" title="<%= game.title %>"><%= game.title %></h3>
+                    
+                    <div class="game-meta-row">
+                    <span class="game-price">
+                        <%= game.price === 0 ? 'Free' : 'Rp. ' + parseInt(game.price).toLocaleString('id-ID') %>
+                    </span>
+                    <span class="game-rating">
+                        <%= (parseFloat(game.avg_rating) || 0).toFixed(1) %> <i class="fas fa-star"></i>
+                    </span>
+                    </div>
+                </div>
+
+                </div>
+            </a>
+            <% }); %>
+        <% } else { %>
+            <p class="text-white ps-4">No recommended games available yet.</p>
+        <% } %>
       </div>
 
       <br>
       <!-- untuk event informasi -->
+      <% if (activeEvent) { %>
        <div class="container" style="margin-bottom: 80px;">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -707,7 +700,7 @@
 
         <div class="row g-4"> <div class="col-lg-8 col-md-12">
                 <div class="event-video-box">
-                    <iframe src="https://www.youtube.com/embed/O_CycbaPPYk?si=nXGmUQ0IQ6_H8Be6" 
+                    <iframe src="<%= activeEvent.video_url || 'https://www.youtube.com/embed/O_CycbaPPYk?si=nXGmUQ0IQ6_H8Be6' %>" 
                             title="Event Video" frameborder="0" 
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                             allowfullscreen>
@@ -719,39 +712,41 @@
             <div class="col-lg-4 col-md-12 d-flex flex-column justify-content-center">
                 
                 <div class="event-side-banner">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2qE6IfnqD6qlo_ODmOBKDUgJlEXMmnxIwOA&s" 
+                    <img src="<%= activeEvent.banner_url || 'https://via.placeholder.com/400x300' %>" 
                          alt="Event Banner">
                 </div>
 
                 <div class="event-text-box">
-                    <h3>Summer Tournament 2025</h3>
+                    <h3><%= activeEvent.title %></h3>
                     <p>
-                        Bergabunglah dalam turnamen terbesar musim ini! 
-                        Dapatkan hadiah total Rp 50.000.000 dan skin eksklusif terbatas. 
-                        Pendaftaran dibuka untuk semua tier mulai dari Warrior sampai Mythic.
+                        <%= activeEvent.description %>
                     </p>
                     
-                    <a href="/events/summer-2025" class="btn-aqua text-white text-decoration-none px-4 py-2 rounded-pill d-inline-block">
-                        Daftar Sekarang <i class="fas fa-arrow-right ms-2"></i>
+                    <% if (activeEvent.target_url) { %>
+                    <a href="<%= activeEvent.target_url %>" class="btn-aqua text-white text-decoration-none px-4 py-2 rounded-pill d-inline-block">
+                        Lihat Event <i class="fas fa-arrow-right ms-2"></i>
                     </a>
+                    <% } %>
                 </div>
 
             </div>
 
         </div>
       </div>
+      <% } %>
 
       <!-- <br> -->
       <!-- untuk tampilan yg icon saja  -->
+      <% if (pcGames && pcGames.length > 0) { %>
       <div class="container" style="margin-bottom: 80px;">
         
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="text-white fw-bold">Game Khusus PC</h4> <a href="/all-games" class="text-info text-decoration-none small">Lihat Semua <i class="fas fa-arrow-right"></i></a>
+            <h4 class="text-white fw-bold">Game Khusus PC (Download)</h4> <a href="/all-games?type=download" class="text-info text-decoration-none small">Lihat Semua <i class="fas fa-arrow-right"></i></a>
         </div>
 
         <div class="horizontal-scroll-container">
           
-          <% dummyGames.forEach((game, index) => { %>
+          <% pcGames.forEach((game, index) => { %>
             
             <a href="/games/<%= game.slug %>" class="square-game-card">
               
@@ -769,9 +764,9 @@
                   </div>
                   
                   <div class="game-meta-small">
-                      <span><%= game.rating || '4.5' %> <i class="fas fa-star text-warning" style="font-size: 0.7rem;"></i></span>
+                      <span><%= (parseFloat(game.avg_rating) || 0).toFixed(1) %> <i class="fas fa-star text-warning" style="font-size: 0.7rem;"></i></span>
                       <span style="margin: 0 4px;">•</span>
-                      <span><%= game.price === 0 ? 'Free' : 'Rp ' + (game.price/1000) + 'k' %></span>
+                      <span><%= game.price === 0 ? 'Free' : 'Rp. ' + parseInt(game.price).toLocaleString('id-ID') %></span>
                   </div>
               </div>
 
@@ -781,6 +776,7 @@
 
         </div>
       </div>
+      <% } %>
 
       <!-- Buat Banner Iklan  -->
       <div class="container ad-container">
@@ -795,23 +791,110 @@
         </div> -->
       </div>
 
-      <div class="container" style="margin-bottom: 80px;">
+      <div class="container" style="margin-bottom: 30px;">
 
-      
+      <!-- LATEST UPDATED SECTION -->
+      <% if (latestGames && latestGames.length > 0) { %>
+      <div class="section-header d-flex justify-content-between align-items-center mb-4 mt-5">
+        <h2 class="section-title mb-0">Latest Updated</h2>
+        <a href="/games?sort=newest" class="see-all-link">See All <i class="fas fa-arrow-right"></i></a>
+      </div>
+
+      <div class="latest-scroll-container">
+        <% latestGames.forEach(game => { %>
+          <a href="/games/<%= game.slug %>" class="latest-game-card">
+            <div class="latest-game-icon">
+              <% if (game.icon_url && game.icon_url !== '') { %>
+                <img src="<%= game.icon_url %>" alt="<%= game.title %>"
+                     onerror="this.onerror=null;this.src='https://placehold.co/200x200/2a2a40/00D9FF?text=<%= game.title.charAt(0) %>';">
+              <% } else { %>
+                <img src="<%= game.thumbnail_url || 'https://placehold.co/200x200' %>" alt="<%= game.title %>">
+              <% } %>
+            </div>
+            <div class="latest-game-title"><%= game.title %></div>
+          </a>
+        <% }); %>
+      </div>
+      <% } %>
+
 
     </div>
 
-    <!-- Popular Categories Section -->
-    <section class="landing-section">
-      <h2 class="section-title">Popular Categories</h2>
-      <div class="landing-categories-grid">
-        <% categories.forEach(category => { %>
-        <a href="/games?category=<%= category %>" class="landing-category-card">
-          <div class="category-name"><%= category %></div>
+    <!-- Populer Category Section -->
+    <% if (popularCategoryName && popularCategoryGames && popularCategoryGames.length > 0) { %>
+    <section class="landing-section container popular-category-section">
+      <div class="d-flex justify-content-between align-items-center popular-category-header-container">
+        <h2 class="section-title popular-category-header mb-0">Populer Category: <span class="text-info"><%= popularCategoryName %></span></h2>
+        
+        <!-- Pagination Controls -->
+        <% if (popularCategoryGames.length > 6) { %>
+        <div class="pagination-toggle">
+            <button class="btn btn-sm btn-outline-info active" onclick="showPage(1)" id="btn-page-1">1</button>
+            <button class="btn btn-sm btn-outline-info" onclick="showPage(2)" id="btn-page-2">2</button>
+        </div>
+        <% } %>
+      </div>
+
+      <div class="popular-category-grid" id="popular-grid">
+        <% popularCategoryGames.forEach((game, index) => { %>
+        <a href="/games/<%= game.slug %>" class="playstore-card popular-item">
+            <div class="card-banner">
+                <% if (game.icon_url && game.icon_url !== '') { %>
+                    <img src="<%= game.icon_url %>" alt="<%= game.title %>" class="game-icon"
+                         data-fallback="<%= game.thumbnail_url || 'https://placehold.co/180x180/1a1a2e/00D9FF?text=' + (game.title.charAt(0) || 'G') %>"
+                         onerror="this.onerror=null; this.src=this.dataset.fallback;">
+                <% } else { %>
+                    <img src="<%= game.thumbnail_url || 'https://placehold.co/180x180/1a1a2e/00D9FF?text=No+Icon' %>" alt="<%= game.title %>" class="game-icon">
+                <% } %>
+            </div>
+            <div class="card-details">
+                <div class="game-info-text">
+                    <h3 class="game-title"><%= game.title %></h3>
+                    <div class="game-meta-row">
+                        <span class="game-price"><%= game.price === 0 ? 'Free' : 'Rp. ' + parseInt(game.price).toLocaleString('id-ID') %></span>
+                        <span class="game-rating">
+                            <i class="fas fa-star"></i>
+                            <%= game.avg_rating || '4.5' %>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </a>
         <% }); %>
       </div>
+      
+      <script>
+        function showPage(page) {
+            const isMobile = window.innerWidth < 768;
+            const itemsPerPage = isMobile ? 3 : 6;
+            const items = document.querySelectorAll('.popular-item');
+            
+            // Update buttons
+            document.querySelectorAll('.pagination-toggle .btn').forEach(btn => btn.classList.remove('active'));
+            const btn = document.getElementById('btn-page-' + page);
+            if(btn) btn.classList.add('active');
+
+            // Calculate range
+            const startStr = (page - 1) * itemsPerPage;
+            const endStr = startStr + itemsPerPage;
+
+            // Toggle items
+            items.forEach((item, index) => {
+                if (index >= startStr && index < endStr) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize on load and resize
+        document.addEventListener('DOMContentLoaded', () => showPage(1));
+        window.addEventListener('resize', () => showPage(1));
+      </script>
     </section>
+    <% } %>
+
     <!-- Bootstrap JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     Main JS

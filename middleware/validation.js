@@ -126,8 +126,10 @@ const ratingValidation = [
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    req.session.error = errors.array()[0].msg;
-    return res.redirect("back");
+    const errorMsg = errors.array()[0].msg;
+    console.log("Validation Error:", errors.array()); // [DEBUG] Log all validation errors
+    req.session.error = errorMsg;
+    return res.redirect(req.get("Referrer") || "/");
   }
   next();
 };

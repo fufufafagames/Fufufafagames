@@ -124,6 +124,50 @@ module.exports = {
   },
 
   /**
+   * Get random games for recommendations
+   * @param {number} limit 
+   * @returns {Promise<array>}
+   */
+  getRandom: async (limit = 5) => {
+    try {
+      const result = await db.query(`
+        SELECT games.*, users.name as author_name 
+        FROM games 
+        JOIN users ON games.user_id = users.id
+        ORDER BY RANDOM() 
+        LIMIT $1
+      `, [limit]);
+      return result.rows;
+    } catch (error) {
+      console.error("Error getting random games:", error);
+      return [];
+    }
+  },
+
+  /**
+   * Get games by type (e.g. 'download' for PC games)
+   * @param {string} type 
+   * @param {number} limit 
+   * @returns {Promise<array>}
+   */
+  getType: async (type, limit = 8) => {
+    try {
+      const result = await db.query(`
+        SELECT games.*, users.name as author_name
+        FROM games 
+        JOIN users ON games.user_id = users.id
+        WHERE game_type = $1
+        ORDER BY created_at DESC
+        LIMIT $2
+      `, [type, limit]);
+      return result.rows;
+    } catch (error) {
+        console.error("Error getting games by type:", error);
+        return [];
+    }
+  },
+
+  /**
    * Find game by slug
    * @param {string} slug - Game slug
    * @returns {Promise<object|null>} Game object atau null
@@ -168,12 +212,13 @@ module.exports = {
       tags,
       price_type,
       price,
+      icon_url, // [NEW]
     } = gameData;
 
     const result = await db.query(
       `INSERT INTO games 
-             (user_id, title, slug, description, github_url, thumbnail_url, video_url, game_type, category, tags, price_type, price, created_at, updated_at) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW()) 
+             (user_id, title, slug, description, github_url, thumbnail_url, video_url, game_type, category, tags, price_type, price, icon_url, created_at, updated_at) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW(), NOW()) 
              RETURNING *`,
       [
         user_id,
@@ -188,6 +233,7 @@ module.exports = {
         tags,
         price_type,
         price,
+        icon_url, // [NEW]
       ]
     );
 
@@ -212,13 +258,14 @@ module.exports = {
       game_type,
       price_type,
       price,
+      icon_url, // [NEW]
     } = updateData;
 
     const result = await db.query(
       `UPDATE games 
              SET title = $1, description = $2, github_url = $3, thumbnail_url = $4, video_url = $5,
-                 category = $6, tags = $7, game_type = $8, price_type = $9, price = $10, updated_at = NOW() 
-             WHERE slug = $11
+                 category = $6, tags = $7, game_type = $8, price_type = $9, price = $10, icon_url = $11, updated_at = NOW() 
+             WHERE slug = $12
              RETURNING *`,
       [
         title,
@@ -231,6 +278,7 @@ module.exports = {
         game_type,
         price_type,
         price,
+        icon_url, // [NEW]
         slug,
       ]
     );
@@ -301,6 +349,71 @@ module.exports = {
       slug,
     ]);
     return result.rows.length > 0;
+  },
+
+  /**
+   * Get latest uploaded games
+   * @param {number} limit
+   * @returns {Promise<array>}
+   */
+  getLatest: async (limit = 10) => {
+    try {
+      const result = await db.query(`
+        SELECT games.*, users.name as author_name 
+        FROM games 
+        JOIN users ON games.user_id = users.id
+        ORDER BY created_at DESC
+        LIMIT $1
+      `, [limit]);
+      return result.rows;
+    } catch (error) {
+      console.error("Error getting latest games:", error);
+      return [];
+    }
+  },
+
+  /**
+   * Get most popular category based on total play count
+   * @returns {Promise<string>} Category name
+   */
+  getMostPopularCategory: async () => {
+    try {
+      const result = await db.query(`
+        SELECT category, SUM(play_count) as total_plays 
+        FROM games 
+        WHERE category IS NOT NULL 
+        GROUP BY category 
+        ORDER BY total_plays DESC 
+        LIMIT 1
+      `);
+      return result.rows.length > 0 ? result.rows[0].category : null;
+    } catch (error) {
+      console.error("Error getting popular category:", error);
+      return null;
+    }
+  },
+
+  /**
+   * Get games by category
+   * @param {string} category 
+   * @param {number} limit 
+   * @returns {Promise<array>}
+   */
+  getByCategory: async (category, limit = 12) => {
+    try {
+      const result = await db.query(`
+        SELECT games.*, users.name as author_name
+        FROM games 
+        JOIN users ON games.user_id = users.id
+        WHERE category = $1
+        ORDER BY play_count DESC
+        LIMIT $2
+      `, [category, limit]);
+      return result.rows; 
+    } catch (error) {
+      console.error("Error getting games by category:", error);
+      return [];
+    }
   },
 
   /**
