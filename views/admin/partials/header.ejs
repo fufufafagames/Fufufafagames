@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Admin Cok's</title>
+    
+    <!-- Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Reuse Main Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <style>
+        /* Admin Specific Overrides */
+        body {
+            background: #0f0f1e; /* Keep dark theme */
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden; /* Fix unwanted horizontal scroll */
+        }
+
+        #sidebar {
+            width: 280px;
+            background: rgba(22, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        #content {
+            /* width: 100%; Removed to allow auto width */
+            margin-left: 280px; /* Logic width of sidebar */
+            padding: 20px;
+            transition: all 0.3s;
+            flex: 1; /* Ensure it takes remaining space */
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.7);
+            padding: 12px 20px;
+            margin: 5px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(90deg, rgba(0, 217, 255, 0.1), transparent);
+            color: #fff;
+            border-left: 3px solid #00d9ff;
+        }
+        
+        .nav-link i { width: 20px; text-align: center; }
+
+        .admin-card {
+            background: rgba(30, 30, 50, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 768px) {
+            #sidebar { margin-left: -280px; }
+            #sidebar.active { margin-left: 0; }
+            #content { margin-left: 0; padding: 15px !important; }
+            
+            .admin-card { padding: 15px !important; }
+
+            /* Table Scroll Fix */
+            .table-responsive { overflow-x: auto; }
+            .table-responsive .table th, 
+            .table-responsive .table td { 
+                white-space: nowrap; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <!-- Close Button (Mobile) -->
+        <button type="button" id="sidebarDismiss" class="btn btn-link text-white position-absolute top-0 end-0 m-2 d-md-none">
+            <i class="fas fa-times fa-lg"></i>
+        </button>
+
+        <div class="p-4 mb-3 border-bottom border-secondary">
+            <a href="/" class="text-decoration-none d-flex align-items-center gap-2">
+                <i class="fas fa-shield-alt fa-2x text-aqua"></i>
+                <div>
+                    <h5 class="m-0 text-white fw-bold">ADMIN PANEL</h5>
+                    <small class="text-white-50">Cok's Games</small>
+                </div>
+            </a>
+        </div>
+
+        <ul class="list-unstyled">
+            <li>
+                <a href="/admin" class="nav-link <%= page === 'dashboard' ? 'active' : '' %>">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users" class="nav-link <%= page === 'users' ? 'active' : '' %>">
+                    <i class="fas fa-users"></i> User Management
+                </a>
+            </li>
+            <li>
+                <a href="/admin/events" class="nav-link <%= page === 'events' ? 'active' : '' %>">
+                    <i class="fas fa-calendar-alt"></i> Events (Coming Soon)
+                </a>
+            </li>
+            <li class="mt-4 border-top border-secondary pt-3">
+                <a href="/" class="nav-link">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+                <a href="/auth/logout" class="nav-link text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="content">
+        <!-- Topbar Mobile Toggle -->
+        <button id="sidebarCollapse" class="btn btn-dark d-md-none mb-3">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="container-fluid">
+            <!-- Alert Messages -->
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>

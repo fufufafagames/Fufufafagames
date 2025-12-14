@@ -1,0 +1,450 @@
+<%- include('partials/header') %>
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <h2 class="text-white fw-bold m-0">Event Management</h2>
+    <button class="btn btn-aqua" data-bs-toggle="modal" data-bs-target="#createEventModal">
+        <i class="fas fa-plus me-2"></i> New Event
+    </button>
+</div>
+
+<!-- Event List -->
+<div class="admin-card">
+    <!-- Desktop Table View -->
+    <div class="table-responsive d-none d-md-block">
+        <table class="table table-dark table-hover align-middle text-white mb-0" style="background: transparent;">
+            <thead class="bg-dark">
+                <tr>
+                    <th class="py-3">Event Banner</th>
+                    <th class="py-3">Title & Info</th>
+                    <th class="py-3">Timeline</th>
+                    <th class="py-3">Status</th>
+                    <th class="py-3 text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(events.length === 0) { %>
+                    <tr><td colspan="5" class="text-center py-4 text-white-50">No events found.</td></tr>
+                <% } %>
+                
+                <% events.forEach(e => { %>
+                <tr>
+                    <td>
+                        <img src="<%= e.banner_url || 'https://via.placeholder.com/150x80' %>" 
+                             class="rounded border border-secondary" 
+                             width="120" height="68" style="object-fit: cover;">
+                    </td>
+                    <td>
+                        <div class="fw-bold fs-5"><%= e.title %></div>
+                        <div class="small text-white-50 text-truncate" style="max-width: 250px;"><%= e.description %></div>
+                    </td>
+                    <td class="text-white-50">
+                        <div><i class="fas fa-play text-success me-2"></i> <%= e.start_date ? new Date(e.start_date).toLocaleDateString() : 'N/A' %></div>
+                        <div><i class="fas fa-stop text-danger me-2"></i> <%= e.end_date ? new Date(e.end_date).toLocaleDateString() : 'N/A' %></div>
+                    </td>
+                    <td>
+                        <% if (e.is_active) { %>
+                            <span class="badge bg-aqua text-white fw-bold"><i class="fas fa-check-circle me-1"></i> ACTIVE</span>
+                        <% } else { %>
+                            <span class="badge bg-secondary text-white">Inactive</span>
+                        <% } %>
+                    </td>
+                    <td class="text-end">
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-warning me-1 btn-edit-event" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editEventModal"
+                                data-id="<%= e.id %>"
+                                data-title="<%= e.title %>"
+                                data-description="<%= e.description %>"
+                                data-banner="<%= e.banner_url %>"
+                                data-video="<%= e.video_url %>"
+                                data-target="<%= e.target_url %>"
+                                data-start="<%= e.start_date ? new Date(e.start_date).toISOString().slice(0,16) : '' %>"
+                                data-end="<%= e.end_date ? new Date(e.end_date).toISOString().slice(0,16) : '' %>"
+                                data-game-id="<%= e.game_id %>"
+                                title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <% if (!e.is_active) { %>
+                            <form action="/admin/events/<%= e.id %>/activate" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-success" title="Set Active">
+                                    <i class="fas fa-power-off"></i>
+                                </button>
+                            </form>
+                        <% } %>
+                        
+                        <form action="/admin/events/<%= e.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Delete this event?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="d-md-none">
+        <% if(events.length === 0) { %>
+            <div class="text-center py-4 text-white-50">No events found.</div>
+        <% } %>
+
+        <% events.forEach(e => { %>
+            <div class="card bg-dark border-secondary mb-3 shadow-sm">
+                <div class="position-relative">
+                    <img src="<%= e.banner_url || 'https://via.placeholder.com/400x200' %>" class="card-img-top" style="height: 140px; object-fit: cover; opacity: 0.8;">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <% if (e.is_active) { %>
+                            <span class="badge bg-aqua shadow"><i class="fas fa-check-circle"></i></span>
+                        <% } else { %>
+                            <span class="badge bg-secondary shadow">Inactive</span>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <h5 class="card-title text-white fw-bold mb-1"><%= e.title %></h5>
+                    <p class="card-text text-white-50 small mb-2" style="display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;"><%= e.description %></p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3 text-white-50 small">
+                        <span><i class="fas fa-calendar-alt text-aqua me-1"></i> <%= e.start_date ? new Date(e.start_date).toLocaleDateString() : 'N/A' %></span>
+                        <span><i class="fas fa-flag-checkered text-danger me-1"></i> <%= e.end_date ? new Date(e.end_date).toLocaleDateString() : 'N/A' %></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-warning flex-grow-1 edit-event-btn" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editEventModal"
+                                data-id="<%= e.id %>"
+                                data-title="<%= e.title %>"
+                                data-description="<%= e.description %>"
+                                data-banner="<%= e.banner_url %>"
+                                data-video="<%= e.video_url %>"
+                                data-start="<%= e.start_date ? new Date(e.start_date).toISOString().slice(0,16) : '' %>"
+                                data-end="<%= e.end_date ? new Date(e.end_date).toISOString().slice(0,16) : '' %>">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </button>
+                        
+                        <form action="/admin/events/<%= e.id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Delete this event?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger px-3">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <% if (!e.is_active) { %>
+                        <form action="/admin/events/<%= e.id %>/activate" method="POST" class="mt-2">
+                            <button type="submit" class="btn btn-sm btn-outline-success w-100">
+                                <i class="fas fa-power-off me-1"></i> Activate Now
+                            </button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<!-- Create Event Modal -->
+<div class="modal fade" id="createEventModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <form id="createEventForm" action="/admin/events" method="POST" enctype="multipart/form-data">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Create New Event</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Event Title</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" name="title" required placeholder="Ex: Summer Sale Tournament" maxlength="25">
+                        <div class="form-text text-white-50 small">Max 25 characters.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control bg-dark text-white border-secondary" name="description" rows="3" placeholder="Short detail..." maxlength="150"></textarea>
+                        <div class="form-text text-white-50 small">Max 150 characters.</div>
+                    </div>
+                    
+
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Banner</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text bg-secondary border-secondary text-white">URL</span>
+                                <input type="url" class="form-control bg-dark text-white border-secondary banner-url-input" name="banner_url" placeholder="https://...">
+                            </div>
+                            <div class="text-center text-muted mb-2">- OR -</div>
+                            <input type="file" class="form-control bg-dark text-white border-secondary banner-file-input" name="banner" accept=".jpg,.jpeg,.png,.gif">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Video</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text bg-secondary border-secondary text-white">URL</span>
+                                <input type="url" class="form-control bg-dark text-white border-secondary video-url-input" name="video_url" placeholder="https://youtube.com/...">
+                            </div>
+                            <div class="text-center text-muted mb-2">- OR -</div>
+                            <input type="file" class="form-control bg-dark text-white border-secondary video-file-input" name="video" accept=".mp4,.mkv,.av1">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="datetime-local" class="form-control bg-dark text-white border-secondary" name="start_date">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="datetime-local" class="form-control bg-dark text-white border-secondary" name="end_date">
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="upload-progress-container mb-3 d-none">
+                        <label class="form-label">Uploading...</label>
+                        <div class="progress bg-secondary" style="height: 20px;">
+                            <div class="progress-bar bg-aqua upload-progress-bar" role="progressbar" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-aqua">Create Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Event Modal -->
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <form id="editEventForm" action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Edit Event</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Event Title</label>
+                        <input type="text" name="title" id="editTitle" class="form-control bg-black text-white border-secondary" required maxlength="25">
+                        <div class="form-text text-white-50 small">Max 25 characters.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" id="editDescription" class="form-control bg-black text-white border-secondary" rows="3" maxlength="150"></textarea>
+                        <div class="form-text text-white-50 small">Max 150 characters.</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Banner</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text bg-secondary border-secondary text-white">URL</span>
+                                <input type="url" name="banner_url" id="editBanner" class="form-control bg-black text-white border-secondary banner-url-input" placeholder="https://...">
+                            </div>
+                            <div class="text-center text-muted mb-2">- OR -</div>
+                            <input type="file" class="form-control bg-black text-white border-secondary banner-file-input" name="banner" accept=".jpg,.jpeg,.png,.gif">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Video</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text bg-secondary border-secondary text-white">URL</span>
+                                <input type="url" name="video_url" id="editVideo" class="form-control bg-black text-white border-secondary video-url-input" placeholder="https://youtube.com/...">
+                            </div>
+                            <div class="text-center text-muted mb-2">- OR -</div>
+                            <input type="file" class="form-control bg-black text-white border-secondary video-file-input" name="video" accept=".mp4,.mkv,.av1">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="datetime-local" name="start_date" id="editStart" class="form-control bg-black text-white border-secondary">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="datetime-local" name="end_date" id="editEnd" class="form-control bg-black text-white border-secondary">
+                        </div>
+                    </div>
+                </div> <!-- End modal-body -->
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-aqua">Save Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script id="games-data" type="application/json">
+    <%- JSON.stringify(games || []) %>
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inject Games Data safely
+        const availableGames = JSON.parse(document.getElementById('games-data').textContent);
+        console.log('Loaded games:', availableGames.length);
+
+        const editButtons = document.querySelectorAll('.edit-event-btn');
+        const eventForm = document.getElementById('eventForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const idInput = document.getElementById('eventId');
+
+        // Elements
+        const titleInput = document.getElementById('eventTitle');
+        const descInput = document.getElementById('eventDescription');
+        const bannerUrlInput = document.getElementById('eventBannerUrl');
+        const videoUrlInput = document.getElementById('eventVideoUrl');
+        const targetUrlInput = document.getElementById('eventTargetUrl');
+        const startInput = document.getElementById('eventStartDate');
+        const endInput = document.getElementById('eventEndDate');
+        const gameIdInput = document.getElementById('eventGameId');
+        
+        // Progress UI
+        const progressContainer = document.getElementById('uploadProgressContainer');
+        const progressBar = document.getElementById('uploadProgressBar');
+
+        // --- Game Search Logic ---
+        function setupGameSearch(containerSelector) {
+            const container = document.querySelector(containerSelector);
+            if(!container) return; // Guard
+
+            const searchInput = container.querySelector('.game-search-input');
+            const resultsContainer = container.querySelector('.game-search-results');
+            const idInputHidden = container.querySelector('.selected-game-id');
+            const previewContainer = container.querySelector('.selected-game-preview');
+            const previewImg = container.querySelector('.game-thumb');
+            const previewTitle = container.querySelector('.game-title');
+            const clearBtn = container.querySelector('.clear-game-btn');
+
+            if(!searchInput) return;
+
+            function renderResults(matches) {
+                resultsContainer.innerHTML = '';
+                if(matches.length === 0) {
+                    resultsContainer.innerHTML = '<div class="p-2 text-white-50 text-center">No games found</div>';
+                } else {
+                    matches.forEach(game => {
+                        const div = document.createElement('div');
+                        div.className = 'd-flex align-items-center p-2 border-bottom border-secondary hover-bg-dark cursor-pointer text-white';
+                        div.style.cursor = 'pointer';
+                        div.innerHTML = `
+                            <div class="me-3">
+                                <img src="${game.thumbnail_url || 'https://via.placeholder.com/60'}" class="rounded" width="50" height="50" style="object-fit:cover;">
+                            </div>
+                            <div>
+                                <h6 class="mb-0 text-aqua fw-bold">${game.title}</h6>
+                                <small class="text-white-50">${game.developer || '-'}</small>
+                            </div>
+                        `;
+                        div.addEventListener('click', () => selectGame(game));
+                        resultsContainer.appendChild(div);
+                    });
+                }
+                resultsContainer.classList.remove('d-none');
+            }
+
+            function selectGame(game) {
+                idInputHidden.value = game.id;
+                searchInput.value = '';
+                previewImg.src = game.thumbnail_url || 'https://via.placeholder.com/60';
+                previewTitle.textContent = game.title;
+                
+                searchInput.classList.add('d-none');
+                resultsContainer.classList.add('d-none');
+                previewContainer.classList.remove('d-none');
+            }
+
+            function clearSelection() {
+                idInputHidden.value = '';
+                searchInput.value = '';
+                searchInput.classList.remove('d-none');
+                previewContainer.classList.add('d-none');
+                searchInput.focus();
+            }
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                if(query.length === 0) {
+                    resultsContainer.classList.add('d-none');
+                    return;
+                }
+                const matches = availableGames.filter(g => g.title.toLowerCase().includes(query));
+                renderResults(matches);
+            });
+
+            clearBtn.addEventListener('click', clearSelection);
+
+            // Expose for external use (Edit Modal)
+            container.selectGame = selectGame;
+            container.clearSelection = clearSelection;
+        }
+
+        // Initialize Search on both modals (Targeting the modal ID/Class properly)
+        // Since my previous HTML edits used unique IDs for modals but classes for internal structure.
+        // Create Modal
+        setupGameSearch('#createEventModal'); 
+        // Edit Modal
+        setupGameSearch('#editEventModal');
+
+
+        // --- Edit Button Logic ---
+        editButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.dataset.id;
+                const data = JSON.parse(this.dataset.event); // Ensure dataset.event exists or use individual attrs
+                // If dataset.event is missing (it matches my view_file output which shows individual data attributes), use them.
+                
+                modalTitle.textContent = 'Edit Event';
+                eventForm.action = `/admin/events/${id}/update`;
+                idInput.value = id;
+                
+                // Using dataset attributes as fallback if JSON not present (view_file showed data-title etc.)
+                titleInput.value = this.dataset.title || '';
+                descInput.value = this.dataset.description || '';
+                bannerUrlInput.value = this.dataset.banner || '';
+                videoUrlInput.value = this.dataset.video || '';
+                targetUrlInput.value = this.dataset.target || '';
+                
+                // Game ID logic
+                const gameId = this.dataset.gameId;
+                const editModal = document.querySelector('#editEventModal');
+                if(editModal && editModal.clearSelection) editModal.clearSelection();
+                
+                if(gameId && gameId !== 'null') {
+                    const game = availableGames.find(g => g.id == gameId);
+                    if(game && editModal.selectGame) editModal.selectGame(game);
+                }
+
+                if(this.dataset.start) startInput.value = this.dataset.start;
+                if(this.dataset.end) endInput.value = this.dataset.end;
+                
+                progressContainer.classList.add('d-none');
+            });
+        });
+        
+        // --- Create Button Reset ---
+        const createBtn = document.querySelector('[data-bs-target="#createEventModal"]');
+        if(createBtn) {
+            createBtn.addEventListener('click', () => {
+                 modalTitle.textContent = 'Create New Event';
+                 eventForm.action = '/admin/events';
+                 eventForm.reset();
+                 idInput.value = '';
+                 // Clear search
+                 const createModal = document.querySelector('#createEventModal');
+                 if(createModal && createModal.clearSelection) createModal.clearSelection();
+            });
+        }
+    });
+</script>
+
+<%- include('partials/footer') %>
+```

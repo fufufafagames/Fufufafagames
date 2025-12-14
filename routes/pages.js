@@ -31,14 +31,14 @@ router.get('/about', async (req, res) => {
     stats.indieDevs = parseInt(devsRes.rows[0].count);
 
     res.render('pages/about', { 
-      title: 'About Fufufafagames',
+      title: 'About Cok\'s',
       page: 'about',
       stats
     });
   } catch (error) {
     console.error('Error fetching about stats:', error);
     res.render('pages/about', { 
-      title: 'About Fufufafagames',
+      title: 'About Cok\'s',
       page: 'about',
       stats: { gamesHosted: 0, activeGamers: 0, totalPlays: 0, indieDevs: 0 }
     });
@@ -109,6 +109,32 @@ router.get('/faq', (req, res) => {
     title: 'FAQ',
     page: 'faq' 
   });
+});
+
+const Event = require('../models/Event');
+
+// Dynamic Event Page
+router.get('/events/:slug', async (req, res, next) => {
+    try {
+        const slug = req.params.slug;
+        const fullPath = `/events/${slug}`;
+        
+        // Find event that matches this URL
+        const event = await Event.findByTargetUrl(fullPath);
+        
+        if (!event) {
+            return next(); // 404
+        }
+        
+        res.render('pages/event-detail', {
+            title: event.title,
+            page: 'event-detail',
+            event
+        });
+    } catch (error) {
+        console.error('Event Page Error:', error);
+        next();
+    }
 });
 
 module.exports = router;

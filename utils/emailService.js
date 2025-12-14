@@ -61,11 +61,11 @@ async function sendPaymentSuccessEmail(transaction) {
             
             <p>Happy gaming! 🎮</p>
             
-            <p>Best regards,<br><strong>FUFUFAFAGAMES Team</strong></p>
+            <p>Best regards,<br><strong>COK'S Team</strong></p>
           </div>
           <div class="footer">
             <p>This is an automated email. Please do not reply.</p>
-            <p>&copy; 2025 FUFUFAFAGAMES. All rights reserved.</p>
+            <p>&copy; 2025 COK'S. All rights reserved.</p>
           </div>
         </div>
       </body>

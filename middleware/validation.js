@@ -99,7 +99,7 @@ const gameValidation = [
     .withMessage("Invalid price type"),
 
   body("price")
-    .optional()
+    .optional({ checkFalsy: true })
     .isNumeric()
     .withMessage("Price must be a number"),
 ];

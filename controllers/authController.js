@@ -87,7 +87,7 @@ module.exports = {
       };
 
       req.session.success =
-        "Registration successful! Welcome to FUFUFAFAGAMES 🎮";
+        "Registration successful! Welcome to COK'S 🎮";
       res.redirect("/games");
     } catch (error) {
       console.error("Register error:", error);
@@ -136,6 +136,12 @@ module.exports = {
       if (!user.password) {
         req.session.error =
           "Please login using your OAuth provider (Google/Discord/Github)";
+        return res.redirect("/login");
+      }
+
+      // [NEW] Check if Banned
+      if (user.is_banned) {
+        req.session.error = `Account Suspended: ${user.ban_reason || "Violation of terms"}`;
         return res.redirect("/login");
       }
 

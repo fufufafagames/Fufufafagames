@@ -29,7 +29,7 @@ module.exports = {
           await Notification.create(
               req.session.user.id, 
               'system', 
-              'Hello! This is a test notification from Fufufafagames.'
+              'Hello! This is a test notification from Cok\'s.'
           );
           res.json({ success: true });
       } else {

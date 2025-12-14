@@ -147,10 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Console welcome message
-console.log(
-  "%c🎮 FUFUFAFAGAMES",
-  "color: #00D9FF; font-size: 24px; font-weight: bold;"
-);
+    console.log("%c  COK'S  ", "font-size: 20px; font-weight: bold; color: #00d9ff;");
 console.log(
   "%cWelcome to the browser game platform!",
   "color: #00D9FF; font-size: 14px;"

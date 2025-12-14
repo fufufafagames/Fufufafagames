@@ -38,7 +38,7 @@ module.exports = {
       // Ambil 6 featured games (games dengan play_count & rating tertinggi)
       // Ambil 6 featured games (games dengan play_count & rating tertinggi)
       // Ambil 7 featured games (sesuai request user)
-      const featuredGames = await Game.getFeatured(7); 
+      const featuredGames = await Game.getFeatured(4); 
       
       // [NEW] Ambil Recommended Games (Random)
       const recommendedGames = await Game.getRandom(6);

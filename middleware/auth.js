@@ -11,6 +11,9 @@ const ADMIN_CREDENTIALS = [
   "fufufafagames.id",
   "fufufafagames@gmail.com",
   "fufufafagames", // untuk Github/Discord username
+  "coks.games",
+  "coks@gmail.com",
+  "coks",
 ];
 
 /**
@@ -18,19 +21,53 @@ const ADMIN_CREDENTIALS = [
  * @param {Object} user - User object dengan email atau user_metadata
  * @returns {boolean} - true jika user adalah admin
  */
+// function isAdmin(user) {
+//   if (!user) return false;
+
+//   // 1. Check Specific Email
+//   const SPECIFIC_ADMINS = ["coks.helper@gmail.com", "fufufafagames@gmail.com", "fufufafagames.id"];
+//   if (user.email && SPECIFIC_ADMINS.includes(user.email)) {
+//     return true;
+//   }
+
+//   // 2. Check Domain (@coks.pro)
+//   if (user.email && user.email.endsWith("@coks.pro")) {
+//     return true;
+//   }
+
+//   // 3. Check Credentials/Username (Legacy/OAuth)
+//   const LEGACY_ADMINS = ["fufufafagames", "coks", "coks.games"]; 
+//   if (
+//     user.user_metadata &&
+//     user.user_metadata.user_name &&
+//     LEGACY_ADMINS.includes(user.user_metadata.user_name)
+//   ) {
+//     return true;
+//   }
+
+//   return false;
+// }
+
 function isAdmin(user) {
   if (!user) return false;
 
-  // Check email
-  if (user.email && ADMIN_CREDENTIALS.includes(user.email)) {
+  // 1. Check Specific Email
+  const SPECIFIC_ADMINS = ["coks.helper@gmail.com", "fufufafagames@gmail.com", "fufufafagames.id"];
+  if (user.email && SPECIFIC_ADMINS.includes(user.email)) {
     return true;
   }
 
-  // Check username dari OAuth providers (Github/Discord)
+  // 2. Check Domain (@coks.pro)
+  if (user.email && user.email.endsWith("@coks.pro")) {
+    return true;
+  }
+
+  // 3. Legacy Username Check (for Github/Discord if email hidden)
+  const LEGACY_ADMINS = ["fufufafagames", "coks", "coks.games"];
   if (
     user.user_metadata &&
     user.user_metadata.user_name &&
-    ADMIN_CREDENTIALS.includes(user.user_metadata.user_name)
+    LEGACY_ADMINS.includes(user.user_metadata.user_name)
   ) {
     return true;
   }

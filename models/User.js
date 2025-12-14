@@ -71,7 +71,7 @@ module.exports = {
    */
   findById: async (id) => {
     const result = await db.query(
-      "SELECT id, name, email, avatar, bio, created_at FROM users WHERE id = $1",
+      "SELECT id, name, email, avatar, bio, created_at, is_banned, ban_reason FROM users WHERE id = $1",
       [id]
     );
     return result.rows[0] || null;
@@ -193,6 +193,29 @@ module.exports = {
   delete: async (userId) => {
     // TODO: Implementasi cascade delete games atau soft delete
     await db.query("DELETE FROM users WHERE id = $1", [userId]);
+  },
+
+  /**
+   * Ban user
+   * @param {number} userId - User ID
+   * @param {string} reason - Alasan ban
+   */
+  ban: async (userId, reason) => {
+    await db.query(
+      "UPDATE users SET is_banned = TRUE, ban_reason = $1, updated_at = NOW() WHERE id = $2",
+      [reason, userId]
+    );
+  },
+
+  /**
+   * Unban user
+   * @param {number} userId - User ID
+   */
+  unban: async (userId) => {
+    await db.query(
+      "UPDATE users SET is_banned = FALSE, ban_reason = NULL, updated_at = NOW() WHERE id = $1",
+      [userId]
+    );
   },
 
   /**

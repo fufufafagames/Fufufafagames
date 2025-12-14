@@ -37,7 +37,7 @@
     background: #00d2ff; /* Aqua */
     color: #000;
     border-color: #00d2ff;
-    box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+    box-shadow: 0 0 0px rgba(0, 210, 255, 0.5);
 }
 
 /* View Toggles */
@@ -193,16 +193,9 @@
             <div class="col-md-12">
                 <div class="filter-bar p-4 bg-dark-secondary rounded border border-aqua shadow-lg">
                     <div class="row align-items-center g-3">
-                        <!-- Search Input -->
-                        <div class="col-md-4">
-                            <form action="/games" method="GET" class="d-flex position-relative">
-                                <input type="text" name="search" class="form-control rounded-pill ps-5 bg-dark border-secondary text-white" placeholder="Search games..." value="<%= search %>">
-                                <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                            </form>
-                        </div>
                         
                         <!-- Marquee Category Filter -->
-                        <div class="col-md-8 overflow-hidden position-relative">
+                        <div class="col-md-12 overflow-hidden position-relative">
                              <div class="filter-chips-valid-wrapper flex-grow-1 w-100">
                                 <div id="categoryTrack" class="marquee-track">
                                     <a href="/games" class="chip <%= category === '' ? 'active' : '' %>" data-category="">All</a>
@@ -286,7 +279,7 @@
         <% } else { %>
             <!-- Empty State -->
             <div class="text-center py-5 animate-on-scroll fade-up">
-                <i class="fas fa-gamepad fa-5x text-muted mb-3"></i>
+                <i class="fas fa-gamepad fa-5x text-white mb-3"></i>
                 <h3><%= emptyMessage || 'No games found' %></h3>
                 <% if (search || category) { %>
                     <p class="text-white">Try adjusting your search or filters</p>

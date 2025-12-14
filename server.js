@@ -1,5 +1,5 @@
 /**
- * FUFUFAFAGAMES - Main Server Entry Point
+ * COK'S - Main Server Entry Point
  * Platform untuk upload dan play game berbasis browser
  */
 
@@ -28,7 +28,7 @@ app.use(methodOverride("_method"));
 // Session configuration untuk authentication
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "fufufafa-secret-key",
+    secret: process.env.SESSION_SECRET || "coks-secret-key",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -71,8 +71,11 @@ const pageRoutes = require("./routes/pages");
 // Import game controller untuk landing page
 const gameController = require("./controllers/gameController");
 
+const adminRoutes = require("./routes/admin"); // [NEW]
+
 // Mount routes
-app.use("/", pageRoutes); // Mount static pages at root level
+app.use("/", pageRoutes); 
+app.use("/admin", adminRoutes); // [NEW] Admin Routes
 app.use("/", authRoutes);
 app.use("/games", gameRoutes);
 app.use("/ratings", ratingRoutes);
@@ -107,7 +110,7 @@ app.use((err, req, res, next) => {
 // ==================== START SERVER ====================
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`FUFUFAFAGAMES Server running on:`);
+  console.log(`COK'S Server running on:`);
   console.log(`   - Local: http://localhost:${PORT}`);
   console.log(`   - Network: http://${getLocalIP()}:${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);

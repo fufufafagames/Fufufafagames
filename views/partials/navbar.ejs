@@ -116,6 +116,16 @@
               </div>
             </div>
           </li>
+          <% if (user.role === 'admin') { %>
+          <li>
+            <a
+              class="dropdown-item text-white hover-bg-dark d-flex align-items-center gap-2 py-3"
+              href="/admin"
+              ><i class="fas fa-shield-alt text-warning"></i> <span class="fw-bold">Admin Dashboard</span></a
+            >
+          </li>
+          <li><hr class="dropdown-divider bg-secondary m-0" /></li>
+          <% } %>
           <li>
             <a
               class="dropdown-item text-white hover-bg-dark"

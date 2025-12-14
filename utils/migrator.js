@@ -54,12 +54,29 @@ const runMigration = async () => {
                 start_date TIMESTAMP,
                 end_date TIMESTAMP,
                 is_active BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT NOW()
+                created_at TIMESTAMP DEFAULT NOW(),
+                updated_at TIMESTAMP DEFAULT NOW()
             );
         `);
         console.log('events table created.');
 
-        // 5. Seed initial event if empty
+        // 5. Update users table (Ban System)
+        await pool.query(`
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS is_banned BOOLEAN DEFAULT FALSE,
+            ADD COLUMN IF NOT EXISTS ban_reason TEXT;
+        `);
+        console.log('users table updated (ban system).');
+
+        // 6. Update events table (Link to Game)
+        await pool.query(`
+            ALTER TABLE events
+            ADD COLUMN IF NOT EXISTS game_id INTEGER REFERENCES games(id) ON DELETE SET NULL;
+        `);
+        console.log('events table updated (game link).');
+
+        // 7. Seed initial event if empty - DISABLED
+        /*
         const eventCheck = await pool.query("SELECT COUNT(*) FROM events");
         if (parseInt(eventCheck.rows[0].count) === 0) {
             await pool.query(`
@@ -76,6 +93,8 @@ const runMigration = async () => {
             `);
             console.log('Sample event inserted.');
         }
+        */
+        console.log('Event seeding skipped.');
 
         console.log('Migration completed successfully!');
     } catch (error) {

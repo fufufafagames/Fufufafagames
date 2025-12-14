@@ -11,9 +11,10 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false, // Required untuk Supabase
   },
-  max: 20, // Maximum number of clients in pool
+  max: 10, // Reduced max clients to prevent resource locking
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000, // Increased to 10s to prevent timeouts
+  connectionTimeoutMillis: 60000, // Increase wait time
+  keepAlive: true, // Prevent TCP drop
 });
 
 // Test connection

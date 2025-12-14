@@ -1,0 +1,102 @@
+<%- include('partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white fw-bold">Dashboard Overview</h2>
+    <div class="text-white-50">
+        Welcome back, <span class="text-aqua fw-bold"><%= user.name %></span>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="admin-card text-center h-100 p-4">
+            <i class="fas fa-users fa-3x text-info mb-3"></i>
+            <h3 class="text-white fw-bold display-4"><%= stats.users %></h3>
+            <p class="text-white-50 uppercase tracking-widest">Total Users</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="admin-card text-center h-100 p-4">
+            <i class="fas fa-gamepad fa-3x text-warning mb-3"></i>
+            <h3 class="text-white fw-bold display-4"><%= stats.games %></h3>
+            <p class="text-white-50 uppercase tracking-widest">Games Uploaded</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="admin-card text-center h-100 p-4">
+            <i class="fas fa-play-circle fa-3x text-success mb-3"></i>
+            <h3 class="text-white fw-bold display-4"><%= stats.plays.toLocaleString() %></h3>
+            <p class="text-white-50 uppercase tracking-widest">Total Plays</p>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Users -->
+<div class="row">
+    <div class="col-12">
+        <div class="admin-card">
+            <h4 class="text-white mb-4"><i class="fas fa-clock text-aqua me-2"></i> Newest Members</h4>
+            
+            <div class="table-responsive d-none d-md-block">
+                <table class="table table-dark table-hover align-middle mb-0" style="background: transparent;">
+                    <thead>
+                        <tr class="text-white-50">
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% recentUsers.forEach(u => { %>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img src="<%= u.avatar || 'https://via.placeholder.com/40' %>" class="rounded-circle" width="40" height="40">
+                                    <span class="fw-bold text-white"><%= u.name %></span>
+                                </div>
+                            </td>
+                            <td class="text-white-50"><%= u.email %></td>
+                            <td class="text-white-50"><%= new Date(u.created_at).toLocaleDateString() %></td>
+                            <td>
+                                <% if(u.is_banned) { %>
+                                    <span class="badge bg-danger">Banned</span>
+                                <% } else { %>
+                                    <span class="badge bg-success">Active</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mobile List View -->
+            <div class="d-md-none">
+                <% recentUsers.forEach(u => { %>
+                <div class="d-flex align-items-center bg-dark border border-secondary p-3 rounded mb-2">
+                    <img src="<%= u.avatar || 'https://via.placeholder.com/40' %>" class="rounded-circle me-3 border border-secondary" width="40" height="40">
+                    <div class="flex-grow-1 overflow-hidden">
+                        <div class="fw-bold text-white text-truncate"><%= u.name %></div>
+                        <div class="small text-white-50 text-truncate"><%= u.email %></div>
+                    </div>
+                    <div class="ms-2">
+                        <% if(u.is_banned) { %>
+                            <span class="badge bg-danger">Banned</span>
+                        <% } else { %>
+                            <span class="badge bg-success">Active</span>
+                        <% } %>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+            
+            <div class="mt-3 text-end">
+                <a href="/admin/users" class="btn btn-outline-aqua btn-sm">View All Users</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
