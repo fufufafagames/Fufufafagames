@@ -115,8 +115,9 @@ Buka browser dan akses: `http://localhost:3000`
 
 ## 🤝 Kontributor/Team
 - **Adam Rahmatulloh** (Front End Engineer)
-- **[Nama Anggota Lain]** (Role)
-- **[Nama Anggota Lain]** (Role)
+- **Ahmad Ramadhan Sobrunjamil** (Lead Developer)
+- **Muhammad Anwar Ismail** (Bakcend Engineer)
+- **Muhammad Ilham Jazuli** (Community Manager)
 
 ---
 © 2024 COK'S Team. All Rights Reserved.
