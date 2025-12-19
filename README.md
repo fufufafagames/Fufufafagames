@@ -1,4 +1,4 @@
-# 🎮 COK'S (Circle of Knights) - Fufufafagames
+# COK'S (Circle of Knights) - Fufufafagames
 
 > **Platform Distribusi Game Digital Modern berbasis Web.**
 > Project ini dibuat untuk memenuhi tugas akhir mata kuliah Pemrograman Berbasis Platform (PBP).
@@ -8,7 +8,7 @@
 ![Express](https://img.shields.io/badge/express-v4.17.1-lightgrey.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-Supabase-green.svg)
 
-## 📖 Deskripsi
+## Deskripsi
 
 **COK'S (Fufufafagames)** adalah platform e-commerce khusus game digital yang memungkinkan pengguna untuk membeli, mengunduh, dan memberikan ulasan pada game. Dilengkapi dengan dashboard admin yang powerful untuk manajemen konten dan gateway pembayaran DOKU untuk transaksi yang aman.
 
@@ -16,9 +16,9 @@ Website ini sudah live di: **[https://coks.site](https://coks.site)**
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
-### 👤 User Features:
+### User Features:
 - **Authentication**: Login, Register, Forgot Password (Email), Google OAuth.
 - **Game Catalog**: Jelajahi game dengan fitur Search, Sort, dan Filter Categories.
 - **Game Details**: Lihat deskripsi, spesifikasi, dan *Trailer Video*.
@@ -28,7 +28,7 @@ Website ini sudah live di: **[https://coks.site](https://coks.site)**
 - **Library**: Akses dan download game yang sudah dibeli.
 - **Community**: Forum diskusi sederhana antar pengguna.
 
-### 🛡️ Admin Features:
+### Admin Features:
 - **Dashboard**: Statistik penjualan, total user, dan game terpopuler.
 - **Manage Games**: CRUD Game (Upload poster, file game, set harga/diskon).
 - **Manage Users**: Lihat daftar user, Ban/Unban user.
@@ -36,7 +36,7 @@ Website ini sudah live di: **[https://coks.site](https://coks.site)**
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 - **Backend**: Node.js, Express.js
 - **Frontend**: EJS (Templating Engine), CSS (Custom + Bootstrap)
@@ -46,7 +46,7 @@ Website ini sudah live di: **[https://coks.site](https://coks.site)**
 
 ---
 
-## 🚀 Cara Menjalankan (Local Setup)
+## Cara Menjalankan (Local Setup)
 
 Ikuti langkah ini untuk menjalankan project di komputer lokal Anda:
 
@@ -95,20 +95,20 @@ Buka browser dan akses: `http://localhost:3000`
 
 ---
 
-## 📸 Screenshot Tampilan
+## Screenshot Tampilan
 
-*(Tambahkan screenshot website Anda di folder `public/docs` atau lokasi lain dan link di sini)*
-
-### 🏠 Home Page
-![Home Page](https://via.placeholder.com/800x400?text=Screenshot+Home+Page)
-
-### 🛒 Shopping Cart
+### Home Page
+![Homepage](public/img/screenshot-home1.png)
+![Homepage](public/img/screenshot-home2.png)
+![Homepage](public/img/screenshot-home3.png)
+  
+### Shopping Cart
 ![Shopping Cart](https://via.placeholder.com/800x400?text=Screenshot+Shopping+Cart)
 
-### 💳 Payment Page
+### Payment Page
 ![Payment](https://via.placeholder.com/800x400?text=Screenshot+Payment)
 
-### 👨‍💻 Admin Dashboard
+### Admin Dashboard
 ![Admin](https://via.placeholder.com/800x400?text=Screenshot+Admin+Dashboard)
 
 ---
