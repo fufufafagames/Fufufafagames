@@ -104,21 +104,16 @@ Buka browser dan akses: `http://localhost:3000`
 ![Halaman Games](public/img/screenshot-games.png)
 
 ### Halaman About
-![About](public/img/screenshot-about1.png)
-![About](public/img/screenshot-about2.png)
-![About](public/img/screenshot-about3.png)
-![About](public/img/screenshot-about4.png)
-![About](public/img/screenshot-about5.png)
-![About](public/img/screenshot-about6.png)
+![About](public/img/screenshot-about.png)
 
 ### Halaman Community
 ![Community](public/img/screenshot-community.png)
 
 ### Halaman FAQ
-![FAQ](public/img/screenshot-faq.png)
+![FAQ](public/img/screenshot-FAQ.png)
 
 ### Halaman Search
-![Search](public/img/screenshot-search.png)
+![Search](public/img/screenshot-searchgames.png)
 
 ### Halaman Login/Register
 ![Login](public/img/screenshot-login.png)
