@@ -110,10 +110,10 @@ Buka browser dan akses: `http://localhost:3000`
 ![Community](public/img/screenshoot-community.png)
 
 ### Halaman FAQ
-![FAQ](public/img/screenshoot-FAQ.png)
+![FAQ](public/img/screenshoot-faq.png)
 
 ### Halaman Search
-![Search](public/img/screenshot-searchgames.png)
+![Search](public/img/screenshoot-searchgames.png)
 
 ### Halaman Login/Register
 ![Login](public/img/screenshot-login.png)
