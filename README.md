@@ -101,19 +101,81 @@ Buka browser dan akses: `http://localhost:3000`
 ![Homepage](public/img/screenshot-home1.png)
 ![Homepage](public/img/screenshot-home2.png)
 ![Homepage](public/img/screenshot-home3.png)
-  
-### Shopping Cart
-![Shopping Cart](https://via.placeholder.com/800x400?text=Screenshot+Shopping+Cart)
+![Homepage](public/img/screenshot-home4.png)
+![Homepage](public/img/screenshot-home5.png)
+![Homepage](public/img/screenshot-home6.png)
 
-### Payment Page
-![Payment](https://via.placeholder.com/800x400?text=Screenshot+Payment)
+### Halaman Games
+![Halaman Games](public/img/screenshot-games.png)
+
+### Halaman About
+![About](public/img/screenshot-about1.png)
+![About](public/img/screenshot-about2.png)
+![About](public/img/screenshot-about3.png)
+![About](public/img/screenshot-about4.png)
+![About](public/img/screenshot-about5.png)
+![About](public/img/screenshot-about6.png)
+
+### Halaman Community
+![Community](public/img/screenshot-community.png)
+
+### Halaman FAQ
+![FAQ](public/img/screenshot-faq.png)
+
+### Halaman Search
+![Search](public/img/screenshot-search.png)
+
+### Halaman Login/Register
+![Login](public/img/screenshot-login.png)
+![Register](public/img/screenshot-register.png)
+![Forgot Password](public/img/screenshot-forgot-password.png)
+
+### Halaman Kontak
+![Kontak](public/img/screenshot-contact.png)
+
+### Halaman Event
+![Event](public/img/screenshot-event1.png)
+![Event](public/img/screenshot-event2.png)
+
+### Halaman Upload Games
+![Upload Games](public/img/screenshot-upload1.png)
+![Upload Games](public/img/screenshot-upload2.png)
+![Upload Games](public/img/screenshot-upload3.png)
+![Upload Games](public/img/screenshot-upload4.png)
+
+### Halaman Edit Games
+![Edit Games](public/img/screenshot-edit1.png)
+![Edit Games](public/img/screenshot-edit2.png)
+![Edit Games](public/img/screenshot-edit3.png)
+
+### Halaman Profile
+![Profile](public/img/screenshot-profile.png)
+
+### Halaman Setting Profile
+![Setting Profile](public/img/screenshot-setting1.png)
+![Setting Profile](public/img/screenshot-setting2.png)
+
+### Halaman Detail Game
+![Detail Game](public/img/screenshot-game-detail1.png)
+![Detail Game](public/img/screenshot-game-detail2.png)
+![Detail Game](public/img/screenshot-game-detail3.png)
+
+### Halaman Pembayaran
+![Pembayaran](public/img/screenshot-pembayaran1.png)
+![Pembayaran](public/img/screenshot-pembayaran2.png)
+![Pembayaran](public/img/screenshot-pembayaran3.png)
+![Pembayaran](public/img/screenshot-pembayaran4.png)
 
 ### Admin Dashboard
-![Admin](https://via.placeholder.com/800x400?text=Screenshot+Admin+Dashboard)
+![Admin Dashboard](public/img/screenshot-admin-panel1.png)
+![Admin Dashboard](public/img/screenshot-admin-panel2.png)
+![Admin Dashboard](public/img/screenshot-admin-panel3.png)
+![Admin Dashboard](public/img/screenshot-admin-panel4.png)
+![Admin Dashboard](public/img/screenshot-admin-panel5.png)
 
 ---
 
-## 🤝 Kontributor/Team
+## Kontributor/Team
 - **Adam Rahmatulloh** (Front End Engineer)
 - **Ahmad Ramadhan Sobrunjamil** (Lead Developer)
 - **Muhammad Anwar Ismail** (Bakcend Engineer)
